@@ -1,0 +1,98 @@
+{
+  "elevation-level1": {
+    "$type": "shadow",
+    "$description": "Colour: grey/800 #31373D\n0 1 2 rgba(49,55,61,0.06)  +  0 2 8 rgba(49,55,61,0.08)\n\nUse for actionable elements that need a subtle but noticeable separation from the main content — primary CTA buttons, navigation bars, resting cards.",
+    "$value": [
+      {
+        "color": "{elevation-color-8a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y1}",
+        "blur": "{elevation-blur-1}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      {
+        "color": "{elevation-color-6a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y2}",
+        "blur": "{elevation-y4}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    ]
+  },
+  "elevation-level2": {
+    "$type": "shadow",
+    "$description": "Colour: grey/800 #31373D\n0 2 4 rgba(49,55,61,0.06)  +  0 4 16 rgba(49,55,61,0.1)\n\nUse for elements that temporarily rise above others during an interaction, signalling an active or dynamic state — a card on hover, an item being dragged.",
+    "$value": [
+      {
+        "color": "{elevation-color-6a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y2}",
+        "blur": "{elevation-blur-2}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      {
+        "color": "{elevation-color-10a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y3}",
+        "blur": "{elevation-blur-4}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    ]
+  },
+  "elevation-level3": {
+    "$type": "shadow",
+    "$description": "Colour: grey/800 #31373D\n0 4 8 rgba(49,55,61,0.06)  +  0 8 32 rgba(49,55,61,0.12)\n\nUse for floating elements that extend the layout — popover lists (select, dropdown), floating panels (colour picker, date picker), tooltips, FAB.",
+    "$value": [
+      {
+        "color": "{elevation-color-6a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y3}",
+        "blur": "{elevation-blur-3}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      },
+      {
+        "color": "{elevation-color-12a}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": "{elevation-y4}",
+        "blur": "{elevation-blur-5}",
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+# --- dependencies ---------------------------------------------------------
+node_modules/
+
+# npm / yarn / pnpm noise
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# --- generated token output -----------------------------------------------
+# `npm run build:tokens` regenerates every file under config/ from tokens/.
+# tokens/ is the source of truth (the Figma export) and IS committed.
+#
+# Leading slash = only the config/ folder at the repo root, so a real source
+# folder named `config` deeper in the tree is never caught by accident.
+#
+# NOTE: if the iOS / Android devs pull the .swift and .xml files straight out
+# of this repo instead of running the build, comment the next line out and
+# commit config/ on purpose.
+/config/
+
+# --- environment / secrets -------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- editors ---------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# --- OS --------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- misc ------------------------------------------------------------------
+.cache/
+*.tsbuildinfo

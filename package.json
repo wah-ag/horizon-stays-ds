@@ -1,0 +1,19 @@
+{
+  "name": "horizon-ds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node config.js",
+    "build:tokens": "node config.js",
+    "build:tokens:legacy": "node build-tokens.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "style-dictionary": "^5.5.2"
+  }
+}

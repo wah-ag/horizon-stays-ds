@@ -1,0 +1,212 @@
+{
+  "headline-sm": {
+    "$type": "typography",
+    "$description": "Major section headings within a page.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-headline-sm}",
+      "lineHeight": "{line-height-headline-sm}",
+      "letterSpacing": {
+        "value": -0.20000000298023224,
+        "unit": "px"
+      }
+    }
+  },
+  "headline-md": {
+    "$type": "typography",
+    "$description": "Page titles. The top of the in-product ramp.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Semi Bold",
+      "fontSize": "{font-size-headline-md}",
+      "lineHeight": "{line-height-headline-md}",
+      "letterSpacing": {
+        "value": -0.4000000059604645,
+        "unit": "px"
+      }
+    }
+  },
+  "headline-lg": {
+    "$type": "typography",
+    "$description": "Secondary hero text, such as the headline on a destination or collection landing page.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-headline-lg}",
+      "lineHeight": "{line-height-headline-lg}",
+      "letterSpacing": {
+        "value": -0.800000011920929,
+        "unit": "px"
+      }
+    }
+  },
+  "headline-xl": {
+    "$type": "typography",
+    "$description": "The single largest text on a page — hero headlines. One per page, never inside a component.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-headline-xl}",
+      "lineHeight": "{line-height-headline-xl}",
+      "letterSpacing": {
+        "value": -1.2000000476837158,
+        "unit": "px"
+      }
+    }
+  },
+  "title-sm": {
+    "$type": "typography",
+    "$description": "Titles inside compact surfaces — table column groups, small card headers, popover titles.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-title-sm}",
+      "lineHeight": "{line-height-title-sm}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
+  "title-md": {
+    "$type": "typography",
+    "$description": "Card and list-item titles. Medium weight so it holds against body text at the same size.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Semi Bold",
+      "fontSize": "{font-size-title-md}",
+      "lineHeight": "{line-height-title-md}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
+  "title-lg": {
+    "$type": "typography",
+    "$description": "Dialog and sheet titles. Medium weight is what separates it from the headline roles at the same size.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-title-lg}",
+      "lineHeight": "{line-height-title-lg}",
+      "letterSpacing": {
+        "value": -0.20000000298023224,
+        "unit": "px"
+      }
+    }
+  },
+  "body-sm": {
+    "$type": "typography",
+    "$description": "Fine print — legal disclosure, timestamps, metadata. The floor for running text.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-body-sm}",
+      "lineHeight": "{line-height-body-sm}",
+      "letterSpacing": {
+        "value": 0.10000000149011612,
+        "unit": "px"
+      }
+    }
+  },
+  "body-md": {
+    "$type": "typography",
+    "$description": "Supporting body text — card descriptions, form helper text, secondary list lines.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-body-md}",
+      "lineHeight": "{line-height-body-md}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
+  "body-lg": {
+    "$type": "typography",
+    "$description": "The default reading size. Descriptions, policy text, anything set as a paragraph.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-body-lg}",
+      "lineHeight": "{line-height-body-lg}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
+  "body-sm-underlined": {
+    "$type": "typography",
+    "$description": "Link and interaction states — hovered, pressed, enabled — of body / sm. Same size and leading.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-body-sm-underlined}",
+      "lineHeight": "{line-height-body-sm-underlined}",
+      "letterSpacing": {
+        "value": 0.10000000149011612,
+        "unit": "px"
+      }
+    }
+  },
+  "body-md-underlined": {
+    "$type": "typography",
+    "$description": "Link and interaction states — hovered, pressed, enabled — of body / md. Same size and leading.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Regular",
+      "fontSize": "{font-size-body-md-underlined}",
+      "lineHeight": "{line-height-body-m-underlined}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
+  "label-sm": {
+    "$type": "typography",
+    "$description": "The smallest text in the system — badge and status pill text, overlines.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-label-sm}",
+      "lineHeight": "{line-height-label-sm}",
+      "letterSpacing": {
+        "value": 0.20000000298023224,
+        "unit": "px"
+      }
+    }
+  },
+  "label-md": {
+    "$type": "typography",
+    "$description": "Form field labels, chips, filter pills and secondary navigation.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-label-md}",
+      "lineHeight": "{line-height-label-md}",
+      "letterSpacing": {
+        "value": 0.10000000149011612,
+        "unit": "px"
+      }
+    }
+  },
+  "label-lg": {
+    "$type": "typography",
+    "$description": "Button labels, tabs and primary navigation — the one label size a user is meant to click.",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-label-lg}",
+      "lineHeight": "{line-height-label-lg}",
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  }
+}
