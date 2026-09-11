@@ -7,13 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node config.js",
     "build:tokens": "node config.js",
-    "build:tokens:legacy": "node build-tokens.js"
+    "build:tokens:legacy": "node build-tokens.js",
+    "storybook": "npm run build:tokens && storybook dev -p 6006",
+    "build-storybook": "npm run build:tokens && storybook build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "style-dictionary": "^5.5.2"
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/html-vite": "^10.6.0",
+    "storybook": "^10.6.0",
+    "style-dictionary": "^5.5.2",
+    "vite": "^7.3.6"
   }
 }

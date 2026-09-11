@@ -19,6 +19,10 @@ yarn-error.log*
 # commit config/ on purpose.
 /config/
 
+# --- Storybook build output ------------------------------------------------
+# `npm run build-storybook` regenerates this from tokens/ + stories/.
+/storybook-static/
+
 # --- environment / secrets -------------------------------------------------
 .env
 .env.*
