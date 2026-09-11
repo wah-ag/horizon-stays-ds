@@ -109,6 +109,17 @@
       ]
     }
   },
+  "color-blue-100a": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.8941176533699036,
+        0.9333333373069763,
+        0.9960784316062927
+      ]
+    }
+  },
   "color-blue-200": {
     "$type": "color",
     "$value": {
@@ -150,6 +161,17 @@
         0.23137255012989044,
         0.5098039507865906,
         0.9647058844566345
+      ]
+    }
+  },
+  "color-blue-500a": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.37254902720451355,
+        0.5960784554481506,
+        0.9607843160629272
       ]
     }
   },
@@ -646,6 +668,18 @@
         1,
         1
       ]
+    }
+  },
+  "color-grey-0a": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 0.5
     }
   },
   "color-grey-50": {

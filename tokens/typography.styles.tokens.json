@@ -55,6 +55,19 @@
       }
     }
   },
+  "title-xs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{typograghy-font-family-inter}",
+      "fontWeight": "Medium",
+      "fontSize": "{font-size-title-xs}",
+      "lineHeight": 0,
+      "letterSpacing": {
+        "value": 0,
+        "unit": "px"
+      }
+    }
+  },
   "title-sm": {
     "$type": "typography",
     "$description": "Titles inside compact surfaces — table column groups, small card headers, popover titles.",
