@@ -48,6 +48,13 @@
       "unit": "px"
     }
   },
+  "font-size-title-xs": {
+    "$type": "dimension",
+    "$value": {
+      "value": 0,
+      "unit": "px"
+    }
+  },
   "font-size-body-sm": {
     "$type": "dimension",
     "$value": {
@@ -104,9 +111,13 @@
       "unit": "px"
     }
   },
-  "spacing-padding-xs": {
+  "spacing-padding-xxs": {
     "$type": "dimension",
     "$value": "{spacing-1}"
+  },
+  "spacing-padding-xs": {
+    "$type": "dimension",
+    "$value": "{spacing-2}"
   },
   "spacing-padding-sm": {
     "$type": "dimension",
@@ -205,14 +216,14 @@
       "unit": "px"
     }
   },
-  "line-height-label-sm": {
+  "line-height-body-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
       "unit": "px"
     }
   },
-  "line-height-body-sm": {
+  "line-height-label-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
@@ -233,22 +244,6 @@
       "unit": "px"
     }
   },
-  "size-container-sm": {
-    "$type": "dimension",
-    "$value": "{sizing-19}"
-  },
-  "size-row-sm": {
-    "$type": "dimension",
-    "$value": "{sizing-7}"
-  },
-  "size-avatar-xs": {
-    "$type": "dimension",
-    "$value": "{sizing-2}"
-  },
-  "size-thumbnail-sm": {
-    "$type": "dimension",
-    "$value": "{sizing-12}"
-  },
   "size-control-sm": {
     "$type": "dimension",
     "$value": "{sizing-5}"
@@ -256,6 +251,22 @@
   "size-target-min": {
     "$type": "dimension",
     "$value": "{sizing-6}"
+  },
+  "size-avatar-xs": {
+    "$type": "dimension",
+    "$value": "{sizing-2}"
+  },
+  "size-row-sm": {
+    "$type": "dimension",
+    "$value": "{sizing-7}"
+  },
+  "size-thumbnail-sm": {
+    "$type": "dimension",
+    "$value": "{sizing-12}"
+  },
+  "size-container-sm": {
+    "$type": "dimension",
+    "$value": "{sizing-19}"
   },
   "size-container-md": {
     "$type": "dimension",
