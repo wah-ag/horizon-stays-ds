@@ -1,10 +1,11 @@
 /**
- * Storybook — Horizon design tokens.
+ * Storybook — Horizon design tokens and components.
  *
- * There are no components in this repo, so this Storybook is a documentation
- * surface for the tokens themselves. The stories read the CSS that config.js
- * generates, which means the docs cannot drift from what ships: if a token is
- * not in the build output, it is not on the page.
+ * `stories/` documents the tokens themselves. Those stories read the CSS that
+ * config.js generates, which means the docs cannot drift from what ships: if a
+ * token is not in the build output, it is not on the page.
+ *
+ * `src/components/` holds the components, each with its stories beside it.
  *
  * `npm run storybook` runs `build:tokens` first for that reason.
  *
@@ -12,6 +13,6 @@
  */
 export default {
   framework: '@storybook/html-vite',
-  stories: ['../stories/**/*.stories.js'],
+  stories: ['../stories/**/*.stories.js', '../src/**/*.stories.js'],
   addons: ['@storybook/addon-docs'],
 };

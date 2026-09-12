@@ -1,0 +1,207 @@
+/**
+ * ButtonCTA — Horizon call-to-action button.
+ * Figma: btn-CTA — node 80:359
+ *
+ * Every value is a semantic token. Consume a platform entry point
+ * (config/css/index.css) for these to resolve.
+ */
+
+.horizon-btn-cta {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-gap-xs);
+  border: 0;
+  border-radius: var(--border-radius-sm);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.horizon-btn-cta__label {
+  font-family: var(--title-sm-font-family);
+  font-weight: var(--title-sm-font-weight);
+  font-size: var(--title-sm-font-size);
+  line-height: var(--title-sm-line-height);
+  letter-spacing: var(--title-sm-letter-spacing);
+  white-space: nowrap;
+  color: inherit;
+}
+
+.horizon-btn-cta__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- sizes -- */
+
+.horizon-btn-cta--lg {
+  height: var(--size-control-lg);
+  padding: var(--spacing-padding-md);
+}
+
+.horizon-btn-cta--md {
+  height: var(--size-control-md);
+  padding: var(--spacing-padding-sm);
+}
+
+.horizon-btn-cta--sm {
+  height: var(--size-control-sm);
+  padding: var(--spacing-padding-sm);
+}
+
+/*
+ * The `font-variation-settings` axes below are Material Symbols renderer
+ * settings, not design values, and the token layer defines none — exemption
+ * recorded in docs/exemptions.md. `opsz` tracks the icon size; the axis floor is
+ * 20, which is why the 16px icon asks for 20.
+ */
+.horizon-btn-cta--lg .horizon-btn-cta__icon {
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
+  font-size: var(--size-icon-lg);
+  font-variation-settings: 'opsz' 24, 'wght' 400, 'FILL' 0, 'GRAD' 0;
+}
+
+.horizon-btn-cta--md .horizon-btn-cta__icon {
+  width: var(--size-icon-md);
+  height: var(--size-icon-md);
+  font-size: var(--size-icon-md);
+  font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 0, 'GRAD' 0;
+}
+
+.horizon-btn-cta--sm .horizon-btn-cta__icon {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  font-size: var(--size-icon-sm);
+  font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 0, 'GRAD' 0;
+}
+
+/* -------------------------------------------------------------- primary -- */
+
+.horizon-btn-cta--primary {
+  background-color: var(--color-background-interactive-white-foreground-brand-idle);
+  color: var(--color-text-white);
+}
+
+.horizon-btn-cta--primary .horizon-btn-cta__icon {
+  color: var(--color-icon-white);
+}
+
+/*
+ * Hover and press are prototype interactions Figma wires onto the idle button
+ * only, so they key off `is-interactive`, which nothing but idle carries. That
+ * keeps focused, destructive and disabled inert under the pointer, and keeps a
+ * pinned documentation state from repainting when the mouse crosses it.
+ */
+.horizon-btn-cta--primary.is-interactive:hover,
+.horizon-btn-cta--primary.is-hovered {
+  background-color: var(--color-background-interactive-white-foreground-brand-hovered);
+}
+
+.horizon-btn-cta--primary.is-interactive:active,
+.horizon-btn-cta--primary.is-pressed {
+  background-color: var(--color-background-interactive-white-foreground-brand-pressed);
+}
+
+/* ------------------------------------------------------------ secondary -- */
+
+.horizon-btn-cta--secondary {
+  border: var(--border-width-sm) solid var(--color-border-brand-primary);
+  color: var(--color-text-brand);
+}
+
+.horizon-btn-cta--secondary .horizon-btn-cta__icon {
+  color: var(--color-icon-brand);
+}
+
+.horizon-btn-cta--secondary.is-interactive:hover,
+.horizon-btn-cta--secondary.is-hovered {
+  background-color: var(--color-background-interactive-dark-foreground-brand-idle);
+}
+
+/*
+ * Figma's secondary/pressed (80:350) drops the 1px border, which shrinks the
+ * button by 2px mid-press. The border is kept and tinted to the fill instead,
+ * so the outer box stays put. Raised in docs/design-findings.md.
+ */
+.horizon-btn-cta--secondary.is-interactive:active,
+.horizon-btn-cta--secondary.is-pressed {
+  border-color: var(--color-background-interactive-white-foreground-brand-idle);
+  background-color: var(--color-background-interactive-white-foreground-brand-idle);
+  color: var(--color-text-white);
+}
+
+.horizon-btn-cta--secondary.is-interactive:active .horizon-btn-cta__icon,
+.horizon-btn-cta--secondary.is-pressed .horizon-btn-cta__icon {
+  color: var(--color-icon-white);
+}
+
+/* ---------------------------------------------------------- destructive -- */
+
+/* Resting only — the design defines no hover or press response for these. */
+.horizon-btn-cta--primary.horizon-btn-cta--destructive {
+  background-color: var(--color-background-interactive-white-foreground-danger-idle);
+  color: var(--color-text-white);
+}
+
+.horizon-btn-cta--secondary.horizon-btn-cta--destructive {
+  border-color: var(--color-border-danger-primary);
+  background-color: transparent;
+  color: var(--color-text-danger);
+}
+
+.horizon-btn-cta--secondary.horizon-btn-cta--destructive .horizon-btn-cta__icon {
+  color: var(--color-icon-danger);
+}
+
+/* ---------------------------------------------------------------- focus -- */
+
+/*
+ * Figma draws focus as a wrapping frame: a 2px brand-secondary border at
+ * radius-md, 2px clear of the button. `outline` + `outline-offset` is the same
+ * geometry without a wrapper element; the ring's corner radius resolves to
+ * 10px rather than the designed 12px. Raised in docs/design-findings.md.
+ */
+.horizon-btn-cta:focus-visible,
+.horizon-btn-cta.is-focused {
+  outline: var(--border-width-md) solid var(--color-border-brand-secondary);
+  outline-offset: var(--spacing-padding-xxs);
+}
+
+.horizon-btn-cta--secondary:focus-visible,
+.horizon-btn-cta--secondary.is-focused {
+  background-color: var(--color-background-base);
+}
+
+/* ------------------------------------------------------------- disabled -- */
+
+.horizon-btn-cta:disabled {
+  cursor: not-allowed;
+}
+
+/* White at 50% over the brand fill — the two stacked layers Figma exports. */
+.horizon-btn-cta--primary:disabled {
+  background-color: var(--color-background-interactive-white-foreground-brand-idle);
+  background-image: linear-gradient(
+    var(--color-background-disabled-brand),
+    var(--color-background-disabled-brand)
+  );
+  color: var(--color-text-disabled-primary);
+}
+
+.horizon-btn-cta--primary:disabled .horizon-btn-cta__icon {
+  color: var(--color-icon-white);
+}
+
+.horizon-btn-cta--secondary:disabled {
+  border-color: var(--color-border-disabled);
+  background-color: transparent;
+  color: var(--color-text-disabled-secondary);
+}
+
+.horizon-btn-cta--secondary:disabled .horizon-btn-cta__icon {
+  color: var(--color-icon-disabled);
+}
