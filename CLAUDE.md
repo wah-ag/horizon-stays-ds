@@ -4,8 +4,8 @@ Intro- This project is to build design system that syncs both design and develop
 
 This file holds the culture: how tokens and components are built here, what is
 allowed, and what to avoid. It does not hold stack facts. Before changing
-tooling, dependencies, scripts, or build configuration, read `package.json` and
-the header comment in `config.js` and follow them as the source of truth.
+tooling, dependencies, tests, package scripts, or build configuration, read
+`./tools.md` and follow it as the source of truth.
 
 ## The system
 
@@ -43,7 +43,9 @@ the header comment in `config.js` and follow them as the source of truth.
 
 ## Components
 
-There are no components in this repo yet. These rules apply from the first one.
+Components live in `src/components/`, one folder each, with their stories
+beside them. `ButtonCTA` is the first; these rules apply to it and to every
+component after it.
 
 - Every component covers every interaction state the product uses: default,
   hovered, pressed, focused, disabled, destructive (error cases), as applicable. The token
