@@ -7,7 +7,37 @@
           "core.value.tokens.json"
         ]
       }
+    },
+    "semantics-color": {
+      "modes": {
+        "on-light": [
+          "semantics-color.on-light.tokens.json"
+        ],
+        "on-dark": [
+          "semantics-color.on-dark.tokens.json"
+        ]
+      }
+    },
+    "type-scale": {
+      "modes": {
+        "web": [
+          "type-scale.web.tokens.json"
+        ],
+        "mobile": [
+          "type-scale.mobile.tokens.json"
+        ],
+        "back-office": [
+          "type-scale.back-office.tokens.json"
+        ]
+      }
     }
   },
-  "styles": {}
+  "styles": {
+    "typography": [
+      "typography.styles.tokens.json"
+    ],
+    "effects": [
+      "effects.styles.tokens.json"
+    ]
+  }
 }

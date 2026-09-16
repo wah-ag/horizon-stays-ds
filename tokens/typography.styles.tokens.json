@@ -59,9 +59,9 @@
     "$type": "typography",
     "$value": {
       "fontFamily": "{typograghy-font-family-inter}",
-      "fontWeight": "Medium",
+      "fontWeight": "Semi Bold",
       "fontSize": "{font-size-title-xs}",
-      "lineHeight": 0,
+      "lineHeight": "{line-height-title-sm}",
       "letterSpacing": {
         "value": 0,
         "unit": "px"
