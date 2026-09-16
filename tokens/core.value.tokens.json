@@ -1016,6 +1016,18 @@
     },
     "$description": "Collapse a dimension - a hidden drawer, a zero-height row."
   },
+  "typograghy-font-weight-regular-400": {
+    "$type": "fontWeight",
+    "$value": "regular"
+  },
+  "typograghy-font-weight-medium-500": {
+    "$type": "fontWeight",
+    "$value": "medium"
+  },
+  "typograghy-font-weight-semibold-600": {
+    "$type": "fontWeight",
+    "$value": "semi-bold"
+  },
   "typograghy-font-family-inter": {
     "$type": "fontFamily",
     "$value": "Inter"

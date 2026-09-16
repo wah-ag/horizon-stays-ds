@@ -33,7 +33,7 @@
   },
   "color-border-danger-primary": {
     "$type": "color",
-    "$value": "{color-red-500}"
+    "$value": "{color-red-600}"
   },
   "color-border-danger-secondary": {
     "$type": "color",
@@ -137,7 +137,7 @@
   },
   "color-text-update": {
     "$type": "color",
-    "$value": "{color-yellow-500}"
+    "$value": "{color-yellow-600}"
   },
   "color-text-white": {
     "$type": "color",
@@ -165,7 +165,7 @@
   },
   "color-background-disabled": {
     "$type": "color",
-    "$value": "{color-grey-200}"
+    "$value": "{color-grey-100}"
   },
   "color-background-brand-surface": {
     "$type": "color",

@@ -165,7 +165,7 @@
   },
   "color-background-disabled": {
     "$type": "color",
-    "$value": "{color-grey-200}"
+    "$value": "{color-grey-100}"
   },
   "color-background-brand-surface": {
     "$type": "color",

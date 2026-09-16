@@ -51,7 +51,7 @@
   "font-size-title-xs": {
     "$type": "dimension",
     "$value": {
-      "value": 0,
+      "value": 10,
       "unit": "px"
     }
   },
@@ -135,6 +135,10 @@
     "$type": "dimension",
     "$value": "{spacing-6}"
   },
+  "spacing-gap-xxs": {
+    "$type": "dimension",
+    "$value": "{spacing-0}"
+  },
   "spacing-gap-xs": {
     "$type": "dimension",
     "$value": "{spacing-1}"
@@ -191,7 +195,7 @@
   "line-height-headline-xl": {
     "$type": "dimension",
     "$value": {
-      "value": 0,
+      "value": 38,
       "unit": "px"
     }
   },
@@ -216,14 +220,14 @@
       "unit": "px"
     }
   },
-  "line-height-body-sm": {
+  "line-height-label-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
       "unit": "px"
     }
   },
-  "line-height-label-sm": {
+  "line-height-body-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
@@ -244,13 +248,13 @@
       "unit": "px"
     }
   },
-  "size-control-sm": {
-    "$type": "dimension",
-    "$value": "{sizing-5}"
-  },
   "size-target-min": {
     "$type": "dimension",
     "$value": "{sizing-6}"
+  },
+  "size-control-sm": {
+    "$type": "dimension",
+    "$value": "{sizing-5}"
   },
   "size-avatar-xs": {
     "$type": "dimension",
@@ -320,6 +324,10 @@
     "$type": "dimension",
     "$value": "{sizing-8}"
   },
+  "size-control-xl": {
+    "$type": "dimension",
+    "$value": "{sizing-10}"
+  },
   "line-height-body-md": {
     "$type": "dimension",
     "$value": {
@@ -344,7 +352,7 @@
   "line-height-body-m-underlined": {
     "$type": "dimension",
     "$value": {
-      "value": 0,
+      "value": 18,
       "unit": "px"
     }
   },
@@ -367,5 +375,9 @@
   "size-icon-xl": {
     "$type": "dimension",
     "$value": "{sizing-4}"
+  },
+  "size-icon-xxl": {
+    "$type": "dimension",
+    "$value": "{sizing-6}"
   }
 }
