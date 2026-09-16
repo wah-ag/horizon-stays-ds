@@ -1,6 +1,6 @@
 # Rule exemptions
 
-`.CLAUDE.md` forbids raw hex, px, or font values inside a component file. Where
+`CLAUDE.md` forbids raw hex, px, or font values inside a component file. Where
 an exemption has been granted, it is recorded here with its reasoning, so a
 reviewer does not have to re-litigate it and a future token can retire it.
 

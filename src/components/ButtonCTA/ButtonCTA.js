@@ -4,7 +4,7 @@
  * Figma: btn-CTA — node 80:359
  * https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=80-359
  *
- * Prop names are the Figma property names verbatim, per `.CLAUDE.md`. `type`
+ * Prop names are the Figma property names verbatim, per `CLAUDE.md`. `type`
  * collides with the native `<button type>` attribute — the DOM attribute is set
  * to "button" independently and the collision is written up in
  * `docs/naming-conflicts.md` for a human to settle.
