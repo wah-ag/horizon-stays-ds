@@ -1,6 +1,6 @@
 # Design findings — btn-CTA (node 80:359)
 
-Raised rather than filled in, per `.CLAUDE.md`. Each item says what the design
+Raised rather than filled in, per `CLAUDE.md`. Each item says what the design
 does, what the code does, and what a designer needs to decide.
 
 Figma: https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=80-359
@@ -79,7 +79,7 @@ suggests primary is the odd one out.
 
 ## 6. Token naming — `color/background/disabled-brand` carries alpha
 
-Its value is `#ffffff80`, 50% white. `.CLAUDE.md` says an `a` suffix means the
+Its value is `#ffffff80`, 50% white. `CLAUDE.md` says an `a` suffix means the
 token carries an alpha channel. This one does and is not suffixed.
 
 **Decision:** rename to `disabled-branda`, or whatever the ramp convention is for

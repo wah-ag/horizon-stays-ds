@@ -1,6 +1,6 @@
 # Naming conflicts
 
-Filed per `.CLAUDE.md` — "Prop names match the Figma property names exactly. If
+Filed per `CLAUDE.md` — "Prop names match the Figma property names exactly. If
 we need a new property name suggestion due to naming conflict with other tools
 and dependencies, report all the naming suggestion under `docs/`."
 
