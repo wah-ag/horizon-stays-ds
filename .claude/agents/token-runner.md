@@ -34,6 +34,9 @@ generated output and is gitignored — never stage it.
   committed.
 - The token files are DTCG-style JSON: leaf objects with `$value` / `$type`.
 - Remote is `origin` (GitHub: wah-ag/horizon-stays-ds).
+- `.claude/skills/tokens/SKILL.md` holds what varies by mode, how to tell a real
+  token gap from a naming mistake, and how to verify a rebuild. Read it before
+  you build.
 
 ## Procedure
 
@@ -70,6 +73,18 @@ npm run build:tokens
 If it fails, **stop**. Show the error and the token(s) it names. A failed build
 usually means the export references something that does not exist — that is a
 Figma-side fix, not something you patch in `tokens/`.
+
+A green build is not proof the export is sound. Before summarising, run the
+checks from "Verify the rebuild" in `.claude/skills/tokens/SKILL.md` that need
+only Bash and Read:
+
+- Read the whole build output. Every line under "Source-data warnings" goes into
+  the summary as a Figma-side problem.
+- Run the skill's mode-parity command. A token present in one mode and missing
+  from another goes into the summary as a design gap.
+- Confirm every `a`-suffixed token resolves to a colour with alpha below 1.
+
+Report what these find. Never fix it — you cannot edit, and the fix is in Figma.
 
 ### 3. Summarise the diff — in designer language
 
