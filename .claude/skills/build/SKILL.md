@@ -75,13 +75,13 @@ Only once stage 4 is fully green. Never before, and never partly.
 2. Deploy that staging build to Vercel.
 3. **Open the deployed URL yourself and see the component render.** A link to a
    build you have not looked at is a lie in a cell.
-4. Write that URL into the registry's `Staging Storybook` column, plus `Commit`
-   and a `GitHub Commits` row.
+4. Write that URL into the registry's `Staging Storybook` column, plus `Commit`,
+   a `GitHub Commits` row, and `Composes` if this component imports another.
 
-Writing `Staging Storybook` flips `Development` to `Ready for Testing`, which is
-what wakes QA. **That cell is the entire handoff** — QA starts from the link in
-the registry, in Claude in Chrome, and tests that deployed build and nothing
-else. QA refuses when the cell is empty, so a component you did not deploy is a
+On a first build, writing `Staging Storybook` flips `Development` to
+`Ready for Testing`, which is what wakes QA. **That cell is the entire handoff** —
+QA starts from the link in the registry, in Claude in Chrome, and tests that
+deployed build and nothing else. QA refuses when the cell is empty, so a component you did not deploy is a
 component nobody tests.
 
 **Check:** the staging URL is deployed, opened, seen to render, and written to
