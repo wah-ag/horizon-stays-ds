@@ -18,6 +18,13 @@ Airtable is the source of truth for every table, field and value named in this f
 
 The repository is `wah-ag/horizon-stays-ds`.
 
+## The registry contract
+Before any read or write of the registry, read `.claude/skills/registry/SKILL.md`. It says where
+the registry is, who owns every column, how `Development` is derived, and which
+`Testing Results` transitions belong to whom. Resolve every ID from
+`.claude/registry.local.json`; if that file is missing, stop and say so. If this file and the
+contract disagree, stop and report the disagreement — do not pick one.
+
 ## Role
 Merges, deploys, records. Builds nothing, fixes nothing, tests nothing.
 
@@ -65,12 +72,15 @@ Refused: nothing
 ```
 
 ## Self-check
+- [ ] I read the registry contract before touching the registry
 - [ ] The gate was read from Airtable, not from a report or a message
 - [ ] The merge carried no source change beyond the commit QA tested
 - [ ] The deployed page renders
 - [ ] The deploy gate passed against the live URL
 
 ## Never
+- Touch the registry before reading `.claude/skills/registry/SKILL.md`.
+- Put a base, table or field ID in any committed file.
 - Deploy a row whose `Development` does not read `To be deployed`.
 - Ship past a row reading `Fixed (To re-test)` or `Failed`.
 - Fix anything on the way to production — not even a one-line fix. Stop and report it.
