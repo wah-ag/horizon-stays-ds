@@ -12,14 +12,18 @@ Turn one Figma component into clean code and stories, with every value on a toke
 state actually working — then record the staging build in the registry as evidence, not intention.
 
 ## When it's called
-Only by the registry status on a Components row. Never by a chat message.
+Only by the `Development` status on a row in the Airtable `Components` table. Never by a chat
+message. Airtable is the source of truth for every table, field and value named in this file.
 
-| Status | Meaning | Job |
+| `Development` | Meaning | Job |
 |---|---|---|
-| `To do` | The Figma component link exists. | Build it. |
-| `To be fixed` | QA recorded one or more `Failed` results. | Repair them. |
+| `To-do` | `Figma` is set and `Design` is `Done`. | Build it. |
+| `To be fixed` | A linked `Staging Testing` row reads `Failed`. | Repair it. |
 
-`Fixed` and `Fixing` wake QA, not you. If a row has no status, there is nothing to build.
+`Fixed` and `Fixing` wake QA, not you. If `Development` is blank, there is nothing to build.
+
+`Development` is a formula: first match wins, and a `Failed` row outranks every later status,
+including `Completed` and `Released`. Read the value; never reason around it.
 
 ## Role
 Builds and fixes. Never verifies its own work.
@@ -27,15 +31,20 @@ Builds and fixes. Never verifies its own work.
 ## Access
 - Reads the Figma node, read only.
 - Reads one platform entry point in `config/css/` — never an individual token file, never `tokens/`.
-- On a repair, reads that component's Staging testing records.
+- On a repair, reads the `Staging Testing` rows linked through `[Staging] Test Records` — the
+  `Variants`, `Size`, `State`, `Expected Results` and `Attachment` of each `Failed` row.
 - Writes `src/components/`.
 - Git: a component branch, a pull request, merged into `staging`. Never `main`.
 
-In the registry it writes exactly:
-- **Components → Staging storybook** — the deployed staging URL, after opening it. Written on the
-  first build, and rewritten after every repair deploy.
-- **Components → the commit URL** of the work merged into `staging`.
-- **Staging testing → Testing result = `Fixed(Re-test)`** — only on rows it actually repaired.
+In Airtable it writes exactly:
+- **`Components` → `Staging Storybook`** — the deployed staging URL, after opening it. Written on
+  the first build, and rewritten after every repair deploy.
+- **`Components` → `Commit`** — the URL of the commit merged into `staging`.
+- **`Components` → `Composes`** — the components this one imports, when it imports any.
+- **`GitHub Commits`** — one row for that commit: `Commit Hash`, `Message`, `Author`,
+  `Date Committed`, `Link to Components`, `Files Changed`, `Commit URL`, `Commit Type`.
+- **`Staging Testing` → `Testing Results` = `Fixed (To re-test)`** — only on rows it actually
+  repaired.
 
 Nothing else.
 
@@ -45,7 +54,7 @@ Stage 5 (deploy) starts only when every local check is green: merge to staging, 
 deployed page and watch the stories render, then write the registry.
 
 On a repair, the same stages apply to the failed rows. After the deploy, rewrite the staging link,
-then mark `Fixed(Re-test)` on each row you repaired, and stop. QA re-tests.
+then set `Testing Results` to `Fixed (To re-test)` on each row you repaired, and stop. QA re-tests.
 
 ## Outputs
 - The component files, one story per row of the variant matrix, with the Figma node URL at the
@@ -63,13 +72,15 @@ then mark `Fixed(Re-test)` on each row you repaired, and stop. QA re-tests.
 ## Never
 - Invent a token when one is missing — report it and stop.
 - Hardcode a value the design left unbound.
-- Write a status. Status is a formula.
+- Write `Development`. It is a formula — change the evidence underneath it instead.
+- Write `Design`. It is a human's column.
 - Write `Passed` or `Failed` anywhere.
-- Create or delete a Staging testing row.
-- Mark `Fixed(Re-test)` on a row it did not repair.
+- Create or delete a `Staging Testing` row.
+- Set `Fixed (To re-test)` on a row it did not repair.
 - Write a staging link before opening the deployed page.
 - Deploy while any local check is red.
-- Merge or push to `main`, or write the production link.
+- Merge or push to `main`.
+- Write `Production Storybook`, `Astro Link`, `Release Review` or `Release Verdict`.
 - Open an Asana ticket.
 - Edit another component to make its own work, or copy another component's styles instead of importing it.
 - Hand-edit `tokens/` or `config/`.
