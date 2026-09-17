@@ -17,12 +17,24 @@
  *    Loading them into one Style Dictionary run makes them overwrite each
  *    other. So we run one Style Dictionary INSTANCE per mode instead.
  *
- * 2. effects.styles.tokens.json references four colours that do not exist in
- *    core.value.tokens.json:
+ * 2. Older exports had effects.styles.tokens.json referencing four colours
+ *    that no token file defined:
  *      elevation-color-6a / -8a / -10a / -12a
- *    They are grey/800 (#31373D) at 6/8/10/12% alpha — see the $description
- *    on each shadow. We inject them below so references resolve.
- *    (This is what produced the "34 token references could not be found".)
+ *    They are grey/800 (#31373D) at 6/8/10/12% alpha. We inject them below,
+ *    but ONLY when the effects file still references them and core does not
+ *    define them. An export that carries its own shadow colours needs no
+ *    injection, so this retires itself.
+ *
+ * 5. Shadow colours can vary by theme. When a shadow layer references a
+ *    semantic token (shadow-depth-1, defined in both on-light and on-dark),
+ *    elevation.css emits `var(--shadow-depth-1)` instead of a resolved colour,
+ *    and declares the shadows on `:root, [data-theme]`. That selector matters:
+ *    a custom property resolves its var()s where it is declared, so a shadow
+ *    declared only on :root would carry light colours into a dark subtree.
+ *    Re-declaring it on every [data-theme] element lets it pick up that
+ *    element's colours. The effects are resolved against BOTH themes, so a
+ *    shadow colour missing from one mode fails the build instead of shipping
+ *    a shadow that silently vanishes in that theme.
  *
  * 3. "Regular" is a Figma style name, not a CSS font-weight → mapped to 400.
  *
@@ -70,13 +82,40 @@ const shadowTint = (alpha) => ({
   $description: `grey/800 #31373D at ${Math.round(alpha * 100)}% — shadow tint.`,
 });
 
-/** Referenced by effects.styles.tokens.json but absent from the Figma export. */
-const INJECTED_TOKENS = {
+/** What older exports referenced from effects.styles.tokens.json without defining. */
+const LEGACY_SHADOW_TINTS = {
   'elevation-color-6a': shadowTint(0.06),
   'elevation-color-8a': shadowTint(0.08),
   'elevation-color-10a': shadowTint(0.1),
   'elevation-color-12a': shadowTint(0.12),
 };
+
+const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
+
+/** Every `{token-name}` reference inside a token file's values. */
+function referencesIn(file) {
+  const refs = new Set();
+  const walk = (node) => {
+    if (typeof node === 'string') {
+      const match = node.match(/^\{([^{}]+)\}$/);
+      if (match) refs.add(match[1]);
+    } else if (node && typeof node === 'object') {
+      for (const [key, child] of Object.entries(node)) if (key !== '$description') walk(child);
+    }
+  };
+  walk(readJson(file));
+  return refs;
+}
+
+const EFFECT_REFERENCES = referencesIn(FILES.effects);
+const CORE_NAMES = new Set(Object.keys(readJson(FILES.core)));
+
+/** Only the legacy tints this export still needs — none, once Figma exports its own. */
+const INJECTED_TOKENS = Object.fromEntries(
+  Object.entries(LEGACY_SHADOW_TINTS).filter(
+    ([name]) => EFFECT_REFERENCES.has(name) && !CORE_NAMES.has(name),
+  ),
+);
 
 /* ==========================================================================
  * 1. Small helpers
@@ -154,6 +193,17 @@ const hex2 = (n) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padSt
 const cssColor = (value) => {
   const { r, g, b, a } = toRgba(value);
   return a === 1 ? `#${hex2(r)}${hex2(g)}${hex2(b)}` : `rgba(${r}, ${g}, ${b}, ${round(a, 3)})`;
+};
+
+/**
+ * `{shadow-depth-1}` → `var(--shadow-depth-1)`, named exactly as
+ * horizon/name/kebab names the token it points at. Not a reference → null.
+ */
+const cssReference = (value) => {
+  const match = typeof value === 'string' && value.match(/^\{([^{}]+)\}$/);
+  if (!match) return null;
+  const name = match[1].replace(/typograghy/g, 'typography').replace(/\./g, '-').toLowerCase();
+  return `var(--${name})`;
 };
 
 /** Android wants #AARRGGBB. */
@@ -322,13 +372,19 @@ StyleDictionary.registerTransform({
   // formatted and lands in the CSS as "[object Object]".
   transitive: true,
   transform: (token) => {
-    const layers = Array.isArray(valueOf(token)) ? valueOf(token) : [valueOf(token)];
+    const asLayers = (value) => (Array.isArray(value) ? value : [value]);
+    const layers = asLayers(valueOf(token));
+    // References are already resolved in `layers`; the original keeps them.
+    const authored = asLayers(token.original?.$value ?? token.original?.value ?? []);
     return layers
-      .map((layer) => {
+      .map((layer, i) => {
         const parts = ['offsetX', 'offsetY', 'blur', 'spread']
           .map((key) => cssDimension(layer[key] ?? 0))
           .join(' ');
-        return `${parts} ${cssColor(layer.color)}`;
+        // A referenced colour stays a reference, so a theme-dependent shadow
+        // colour resolves per theme. See note 5 at the top of this file.
+        const color = cssReference(authored[i]?.color) ?? cssColor(layer.color);
+        return `${parts} ${color}`;
       })
       .join(', ');
   },
@@ -671,11 +727,10 @@ const SCALES = ['web', 'mobile', 'back-office'];
 
 async function buildCore() {
   const coreFilter = (token) => from(FILES.core)(token) || isInjected(token);
-  const shadowFilter = from(FILES.effects);
 
   await build(
     baseConfig({
-      source: [FILES.core, FILES.effects],
+      source: [FILES.core],
       platforms: {
         css: {
           transforms: CSS_TRANSFORMS,
@@ -686,12 +741,6 @@ async function buildCore() {
               format: 'horizon/css/variables',
               filter: coreFilter,
               options: { note: ['Primitives — colour ramps, spacing, sizing, radii, borders.'] },
-            },
-            {
-              destination: 'elevation.css',
-              format: 'horizon/css/variables',
-              filter: shadowFilter,
-              options: { showComments: true, note: ['Composite box-shadow tokens.'] },
             },
           ],
         },
@@ -723,6 +772,48 @@ async function buildCore() {
             },
           ],
         },
+      },
+    }),
+  );
+}
+
+/**
+ * Composite shadows. CSS only — shadows have never had an Android or iOS
+ * format; native targets get the shadow colours per theme through the
+ * semantic colour files instead.
+ *
+ * Resolved against each theme in turn. Dark is a check only: it throws if a
+ * shadow references a colour the dark mode does not define. Light writes the
+ * file, with theme-dependent colours left as var() references (note 5).
+ */
+async function buildElevation() {
+  const elevationConfig = (themeFile, platforms) =>
+    baseConfig({ include: [FILES.core, themeFile], source: [FILES.effects], platforms });
+
+  await new StyleDictionary(
+    elevationConfig(FILES.dark, { css: { transforms: CSS_TRANSFORMS, files: [] } }),
+  ).exportPlatform('css');
+
+  await build(
+    elevationConfig(FILES.light, {
+      css: {
+        transforms: CSS_TRANSFORMS,
+        buildPath: out('css'),
+        files: [
+          {
+            destination: 'elevation.css',
+            format: 'horizon/css/variables',
+            filter: from(FILES.effects),
+            options: {
+              selector: ':root, [data-theme]',
+              showComments: true,
+              note: [
+                'Composite box-shadow tokens.',
+                'Declared on every [data-theme] element so theme-dependent shadow colours resolve per theme.',
+              ],
+            },
+          },
+        ],
       },
     }),
   );
@@ -926,6 +1017,7 @@ fs.rmSync(BUILD_DIR, { recursive: true, force: true });
 await buildCore();
 await buildTheme('light');
 await buildTheme('dark');
+await buildElevation();
 for (const scale of SCALES) await buildScale(scale);
 
 writeSupportFiles();

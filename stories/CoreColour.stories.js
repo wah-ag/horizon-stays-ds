@@ -34,14 +34,18 @@ export const Ramps = () => {
 };
 
 export const ShadowTints = () => {
-  const tints = from('core.css', /^elevation-color-/);
+  // Current exports name them elevation-shadow-*; older ones referenced
+  // elevation-color-*, which config.js injects only while an export needs them.
+  const tints = from('core.css', /^elevation-(shadow|color)-/);
 
   return page(
     'Shadow tints',
-    'grey/800 at four alphas. These exist only so the elevation tokens have something to resolve against.',
-    note(
-      'These four are injected by config.js, not exported from Figma: effects.styles.tokens.json references them but core.value.tokens.json does not define them. See the comment at the top of config.js.',
-    ),
+    'The core colours the elevation shadows are built from. Semantic shadow roles point at these per theme — see Elevation for how they combine.',
+    tints.some((t) => t.name.startsWith('elevation-color-'))
+      ? note(
+          'The elevation-color-* tints are injected by config.js, not exported from Figma: this export references them without defining them. They disappear on their own once Figma exports its own shadow colours.',
+        )
+      : null,
     grid(tints.map((t) => swatch(t))),
   );
 };
