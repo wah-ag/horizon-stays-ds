@@ -61,11 +61,11 @@
   },
   "color-icon-primary": {
     "$type": "color",
-    "$value": "{color-grey-100}"
+    "$value": "{color-grey-50}"
   },
   "color-icon-secondary": {
     "$type": "color",
-    "$value": "{color-grey-100a}"
+    "$value": "{color-grey-100}"
   },
   "color-icon-bold": {
     "$type": "color",
@@ -109,7 +109,7 @@
   },
   "color-text-secondary": {
     "$type": "color",
-    "$value": "{color-grey-100a}"
+    "$value": "{color-grey-100}"
   },
   "color-text-bold": {
     "$type": "color",
@@ -157,7 +157,7 @@
   },
   "color-background-surface": {
     "$type": "color",
-    "$value": "{color-grey-800a}"
+    "$value": "{color-grey-800}"
   },
   "color-background-overlay": {
     "$type": "color",
@@ -278,5 +278,21 @@
   "color-background-interactive-dark-foreground-update-hovered": {
     "$type": "color",
     "$value": "{color-yellow-300}"
+  },
+  "shadow-depth-1": {
+    "$type": "color",
+    "$value": "{elevation-shadow-dark-100}"
+  },
+  "shadow-depth-2": {
+    "$type": "color",
+    "$value": "{elevation-shadow-dark-200}"
+  },
+  "shadow-depth-3": {
+    "$type": "color",
+    "$value": "{elevation-shadow-dark-300}"
+  },
+  "shadow-depth-4": {
+    "$type": "color",
+    "$value": "{elevation-shadow-dark-400}"
   }
 }

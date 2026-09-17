@@ -220,14 +220,14 @@
       "unit": "px"
     }
   },
-  "line-height-label-sm": {
+  "line-height-body-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
       "unit": "px"
     }
   },
-  "line-height-body-sm": {
+  "line-height-label-sm": {
     "$type": "dimension",
     "$value": {
       "value": 16,
@@ -248,29 +248,29 @@
       "unit": "px"
     }
   },
-  "size-target-min": {
-    "$type": "dimension",
-    "$value": "{sizing-6}"
-  },
   "size-control-sm": {
     "$type": "dimension",
     "$value": "{sizing-5}"
   },
-  "size-avatar-xs": {
+  "size-target-min": {
     "$type": "dimension",
-    "$value": "{sizing-2}"
-  },
-  "size-row-sm": {
-    "$type": "dimension",
-    "$value": "{sizing-7}"
+    "$value": "{sizing-6}"
   },
   "size-thumbnail-sm": {
     "$type": "dimension",
     "$value": "{sizing-12}"
   },
+  "size-row-sm": {
+    "$type": "dimension",
+    "$value": "{sizing-7}"
+  },
   "size-container-sm": {
     "$type": "dimension",
     "$value": "{sizing-19}"
+  },
+  "size-avatar-xs": {
+    "$type": "dimension",
+    "$value": "{sizing-2}"
   },
   "size-container-md": {
     "$type": "dimension",
