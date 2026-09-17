@@ -38,42 +38,14 @@ Audits and reports. Owns nothing, fixes nothing, decides nothing.
   - Asana tickets in the project **HorizonStays Design System**, one per new finding.
 
 ## The sweep
-1. Read the previous `reports/registry-audit.md`, so the new one can say what changed.
-2. Read every row of the three tables — never a filtered view.
-3. Count `Development` values, blank included, with the rows behind each count.
-4. Build each owner's queue from the tables below.
-5. Open every link.
-6. Check every row against itself.
-7. Compare the repo's components with the registry's rows.
-8. Overwrite the report.
-9. Open an Asana ticket for each finding that has no open ticket yet.
+Follow `.claude/skills/sweep/SKILL.md`, steps 1–6, in order: read the last report, read every
+row, reconcile each status against its evidence, open every link, hunt contradictions, and write
+the report. The link rules, the contradiction rules, the repo comparison, the report order and
+what each status is waiting on all live there. Do not restate them here.
 
-### Opening a link
-Counting a link is not opening it.
+Then one step of the PM's own:
 
-| Link | Opens when |
-|---|---|
-| `Staging Storybook`, `Production Storybook` | The page renders the component in the browser — not just a response code. A login wall is a dead link. |
-| `Figma` | The node reads through the Figma connection. |
-| `Commit`, `Commit URL` | The commit exists in GitHub. |
-| `Attachment` | Not checked. |
-
-### A row that contradicts itself
-- `Staging Storybook` is set, but `Figma` is empty or `Design` is not `Done`.
-- `Production Storybook` is set, but `Staging Storybook` is empty, no test rows exist, or
-  `Synchronization %` is not `100%`.
-- `Synchronization %` reads `100%`, but a linked test row reads `Failed` or `Fixed (To re-test)`.
-- A `Staging Testing` row has no `Composed In` link, or a blank `Testing Results`.
-- `Commit` points outside `wah-ag/horizon-stays-ds`, or its commit has no `GitHub Commits` row.
-- `Development` reads `Completed` or `Released`, but the component's folder is missing on `main`.
-
-### Repo against registry
-- A folder `src/components/<Name>` matches a `Components` row whose name is exactly `<Name>`.
-- A row with `Production Storybook` set is checked against `main`; a row with `Staging Storybook`
-  set, against `staging`. A missing `staging` branch is itself a finding.
-- A folder with no row, or a built row with no folder, is a finding.
-- Names in `Staging Testing` → `Component/Sub Component` are not compared; `Composed In` is the
-  link that counts.
+7. Open an Asana ticket for each finding that has no open ticket yet — see **Asana tickets** below.
 
 ## Owners
 | Column or table | Owner |
@@ -84,6 +56,7 @@ Counting a link is not opening it.
 | `Composed Into` | Engineer, through `Composes` |
 | `Testing Results` = `Fixed (To re-test)` | Engineer |
 | `Staging Testing` rows, `Testing Results` = `Passed` / `Failed` | QA |
+| `[Staging] Test Records` | QA, through `Composed In` |
 | `Production Storybook` | DevOps |
 | A pull request to `main` | Human |
 | `Astro Link` | Skipped for now — never a finding |
@@ -93,27 +66,11 @@ Counting a link is not opening it.
 A finding on a column whose owner is not set says **Owner: not set** and goes under what you
 should do today. Never guess an owner.
 
-| `Development` | Waiting on |
-|---|---|
-| blank, `Figma` set, `Design` not `Done` | Designer (human) |
-| `To-do`, `To be fixed` | Engineer |
-| `Ready for Testing`, `Fixed`, `Fixing` | QA |
-| `To be deployed` | DevOps — or a human, when its pull request to `main` is open |
-| `Completed`, `Released` | Nobody — still checked in full |
-
 ## Output
 
 ### `reports/registry-audit.md`
-Overwritten each sweep, in this order:
-1. **What you should do today** — every finding a human owns or whose owner is not set, and
-   every open pull request waiting for a human to merge. Most blocking first.
-2. **What changed since last time**
-3. **Status counts** — each count with its rows listed
-4. **Waiting on** — per owner, the rows and what they need
-5. **Contradictions** — rows that contradict themselves, and repo–registry mismatches
-6. **Dead links** — row, column, URL, and what happened when it was opened
-
-Every finding names the row, the column, what disagrees, and the owner.
+Overwritten each sweep, in the order step 6 of the sweep skill sets — **What you should do today**
+first. Every finding names the row, the column, what disagrees, and the owner.
 
 ### Asana tickets
 - One ticket per finding, in **HorizonStays Design System**.
@@ -125,6 +82,7 @@ Every finding names the row, the column, what disagrees, and the owner.
 
 ## Self-check
 - [ ] I read the registry contract before touching the registry
+- [ ] I followed the sweep skill, steps 1–6, and its own self-check holds
 - [ ] I read every row, not a filtered view
 - [ ] I opened every link rather than counting them
 - [ ] Every finding names an owner, or says the owner is not set
