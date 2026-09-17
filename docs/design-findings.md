@@ -1,154 +1,147 @@
-# Design findings — btn-CTA (node 80:359)
+# Design findings — ButtonCTA (component set 132:822)
 
 Raised rather than filled in, per `CLAUDE.md`. Each item says what the design
 does, what the code does, and what a designer needs to decide.
 
-Figma: https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=80-359
+Figma: https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=132-822
+
+This replaces the findings for the previous node, `80:359`. The redesign carries
+most of them forward; node IDs below are the new ones.
 
 ---
 
 ## 1. Primitive used where a semantic token belongs — height
 
-Four symbols bind height to `sizing/10`, a **core primitive**, where their
-siblings use the semantic `size/control/lg`. All four are **large primary**:
-`idle` (80:345), `hovered` (80:342), `pressed` (80:348) and `destructive`
-(80:343). Primary md and sm bind `size/control/md` and `size/control/sm`
-correctly, as does every `secondary` symbol and `primary/disabled`. Both tokens
-resolve to 48px today, so nothing looks wrong.
+Four symbols bind height to `sizing/10`, a **core primitive**, where every other
+symbol of the same size binds `size/control/lg`. All four are **primary lg**:
+`idle` (132:827), `hovered` (132:847), `pressed` (132:851), `destructive`
+(132:843). Both resolve to 48px today.
 
-**Code:** uses `--size-control-lg` everywhere.
+**Code:** `--size-control-lg` for every lg button.
 
-**Decision:** rebind those four in Figma to `size/control/lg`. If the control
-scale ever moves independently of the raw sizing ramp, they silently stop
-tracking the others.
+**Decision:** rebind those four to `size/control/lg`.
 
-## 2. Secondary loses its border when pressed
+## 2. Primitive used where a semantic token belongs — secondary md padding
 
-`secondary/pressed` has no border at **any** size, while all five other
-`secondary` states carry `border/width/sm`. Each pressed frame is 2px narrower
-than its siblings — lg 159 vs 161 (80:350), md 143 vs 145 (80:351), sm 135 vs
-137 (80:333) — so the button shrinks at the moment of press in all three sizes.
+`secondary/md` `idle` (132:907), `disabled` (132:911) and `destructive` (132:915)
+bind horizontal padding to `spacing/4` while vertical is `spacing/padding/sm`.
+Their `hovered` and `pressed` siblings (132:965, 132:855) and the focused inner
+button (132:942) use `spacing/padding/sm` on all four sides. Both are 8px.
 
-**Code:** keeps the 1px border and tints it to the fill, so the outer box is
-stable and the button reads as borderless.
+**Code:** `--spacing-padding-sm` on all sides.
 
-**Decision:** confirm this was unintentional. If the shrink is wanted, say so and
-it goes back in.
+**Decision:** rebind the three to `spacing/padding/sm`.
 
-## 3. Focus ring corner radius
+## 3. Primitive used where a semantic token belongs — focus ring inset
 
-Focus is drawn as a wrapping frame: `border/width/md` in
-`color/border/brand-secondary` at `border/radius/md` (12px), held
-`spacing/padding/xxs` clear of the button.
+All six focused symbols (132:931, 132:936, 132:941, 132:946, 132:951, 132:956)
+bind the ring frame's horizontal padding to `spacing/1` and its vertical padding
+to `spacing/padding/xxs`. Both are 2px.
 
-**Code:** `outline` + `outline-offset`, which is the same geometry with no extra
-DOM node. CSS derives the ring's radius from the button's own
-(`border-radius-sm` 8px + 2px offset = 10px), so the ring is 10px where the
-design says 12px.
+**Code:** `outline-offset: var(--spacing-padding-xxs)`.
 
-**Decision:** accept 10px, or accept a wrapper element to hit 12px exactly.
+**Decision:** rebind horizontal padding to `spacing/padding/xxs`.
 
-## 4. Destructive has no hovered or pressed variant — RESOLVED
+## 4. Focus ring frame — unbound item spacing, and a derived radius
 
-Originally raised as a gap. The designer has since confirmed that hovered and
-pressed are prototype interactions ("while hovering" / "while pressing") wired
-onto the **idle** button only, and that not every variant needs them.
+- The ring frame's item spacing is a raw `10`, bound to nothing, on all six
+  focused symbols. It has no visual effect (the frame holds one child), so nothing
+  in code carries it. Bind it or zero it.
+- The ring's outer corner is bound to `border/radius/md` (12px). Code draws the
+  ring as `outline` + `outline-offset`, whose curve CSS derives from the button's
+  own radius: `radius-sm` 8 + offset 2 + width 2 = 12px. It matches today but
+  does not reference `radius-md`; if either token moves alone, they diverge. A
+  wrapper element would bind it exactly, at the cost of an extra DOM node.
 
-**Code:** hover and press repaint the idle button and are scoped away from
-destructive and disabled. The `danger-hovered` fill that was briefly used for
-destructive hover has been removed — it was filling in a gap that turned out not
-to be one. No `danger-pressed` token is needed.
+**Decision:** accept the derived radius, or ask for the wrapper.
 
-**Consequence, worth a second look:** a destructive button now gives no pointer
-feedback at all. That is faithful to the design, but it is the one place where a
-real cursor gets no response to a click it is about to make. Say the word if
-destructive should pick up the same interaction treatment as idle.
+## 5. A label colour bound to a border token — visible
 
-## 5. Disabled primary — icon and label are different colours
+`secondary/sm/destructive` (132:927, text node 132:929) binds its label to
+`color/border/danger-primary` (`#b0312b`). Its md and lg siblings (132:915,
+132:903) bind `color/text/danger` (`#c1362f`). **These values now differ**, so
+the sm label is visibly darker than md and lg in Figma.
 
-`primary/disabled` sets the label to `color/text/disabled-primary` (`#f2f3f5`)
-but the exported icon SVG is filled `#ffffff` — `color/icon/white`, not
-`color/icon/disabled`. A 13-unit difference, visible on close inspection.
+**Code:** `--color-text-danger` for all three sizes. The sm label will therefore
+read `#c1362f` where the symbol reads `#b0312b`.
 
-**Code:** reproduces the design exactly — label `--color-text-disabled-primary`,
-icon `--color-icon-white`.
+**Decision:** rebind the sm label to `color/text/danger`.
 
-**Decision:** intended, or should the icon drop to the same disabled ramp as the
-label? `secondary/disabled` binds both to the same value (`#b0b8c1`), which
-suggests primary is the odd one out.
+## 6. Secondary loses its border when pressed
 
-## 6. Token naming — `color/background/disabled-brand` carries alpha
+`secondary/pressed` at every size (132:823, 132:855, 132:875) has no stroke,
+while the other five secondary states carry `border/width/sm` inside the layout.
+Each pressed symbol is 2px narrower (lg 131 vs 133, md 119 vs 121, sm 115 vs
+117), so the button would shrink at the moment of press.
 
-Its value is `#ffffff80`, 50% white. `CLAUDE.md` says an `a` suffix means the
-token carries an alpha channel. This one does and is not suffixed.
+**Code:** keeps the border and makes it transparent; the brand fill paints under
+it. No stroke is visible and the box holds still, so the pressed button is 2px
+wider than its symbol.
 
-**Decision:** rename to `disabled-branda`, or whatever the ramp convention is for
-a semantic alpha token. Note that `primary/disabled` works by stacking this over
-`.../brand-idle`, which the code reproduces as a flat layer over the fill.
+**Decision:** confirm the shrink was unintentional.
 
-## 7. Token naming — `typograghy` is misspelled
+## 7. `primary/sm/focused` has a border its siblings do not
 
-`typograghy/font-family/inter` and `typograghy/font-weight/medium-500` — should
-be `typography`. The typo is in the Figma variable names, so it travels into
-every export and every platform output.
+The inner button of 132:956 (node 132:957) carries a `border/width/sm` stroke in
+`color/border/brand-primary`; lg (132:937) and md (132:952) carry none. Invisible
+(same colour as the fill), but it makes the sm symbol 2px wider: 125 where 123
+follows from its siblings.
 
-**Decision:** rename in Figma and re-run the sync. Worth doing before anything
-else consumes these names.
+**Code:** no border on any primary button.
 
-## 8. Unrelated, already known
+**Decision:** drop the stroke from 132:957.
 
-`npm run build:tokens` still warns that `title-xs`, `headline-xl` and
-`body-md-underlined` have a line-height of 0 and are emitted as `normal`.
-Pre-existing, listed in `tools.md`, not introduced here.
+## 8. `primary/md/destructive` is left-aligned
 
----
+132:863 sets its primary-axis alignment to start; every other symbol centres.
+No visual effect while the button hugs its content, but it shows as soon as a
+width is set.
 
-Items 9–12 were found by QA reading the Figma file independently, after the
-first eight were written. None of them changes what renders today.
+**Code:** centred, like every other symbol.
 
-## 9. Every focused symbol binds height to a raw number
+**Decision:** set 132:863 to centre.
 
-The inner `btn-cta` of all six focused symbols uses a literal `48px` / `40px` /
-`32px` rather than `size/control/*`: primary `80:328`, `80:324`, `80:323` and
-secondary `80:326`, `80:355`, `81:366`.
+## 9. Destructive has no focused variant
 
-**Code:** uses `--size-control-*` throughout.
+`state` is one axis, so there is no destructive-and-focused symbol. A keyboard
+user can still focus a destructive button.
 
-**Decision:** same fix and same reasoning as item 1 — a raw number cannot track
-the control scale. This is the larger instance of that problem: six symbols
-rather than four, and a literal rather than a mis-scoped token.
+**Code:** a destructive button takes the same focus ring as every other button
+on `:focus-visible`, and keeps its own fill. Removing focus indication would be
+an accessibility bug.
 
-## 10. Two more primitives standing in for semantic tokens
+**Decision:** confirm the ring, or design a focused destructive.
 
-- The focus frame's horizontal padding is `spacing/1` while its vertical is
-  `spacing/padding/xxs`. Both are 2px; only one is semantic. All six focused
-  symbols.
-- Secondary md binds horizontal padding to `spacing/4` while its vertical uses
-  `spacing/padding/sm`. Both 8px. Nodes `80:331`, `80:341`, `80:330`.
+## 10. Hovered and pressed live on idle only
 
-**Code:** uses `--spacing-padding-*` in both places.
+The idle symbols carry the prototype interactions ON_HOVER and ON_PRESS; no other
+state does. Destructive therefore gives no pointer feedback, as before.
 
-**Decision:** rebind to the semantic tokens so the padding scale stays one thing.
+**Code:** hover and press repaint idle only. Destructive and disabled are inert
+under the pointer.
 
-## 11. A label colour bound to a border token
+## 11. Disabled primary — icon and label are different colours
 
-`secondary/sm/destructive` (node `80:340`, text node `77:57`) binds its label to
-`color/border/danger-primary`. Its md and lg siblings (`80:330`, `80:353`) use
-`color/text/danger`. Same value, wrong role.
+`primary/disabled` binds the label to `color/text/disabled-primary` (`#f2f3f5`)
+and the icon to `color/icon/white` (`#ffffff`). `secondary/disabled` binds both to
+the same disabled value.
 
-**Code:** uses `--color-text-danger` for all three.
+**Code:** reproduces the design exactly.
 
-**Decision:** rebind the sm label. A text colour reading from a border token will
-break the moment the two ramps diverge.
+**Decision:** intended, or should the icon use a disabled token?
 
-## 12. `primary/sm/focused` has a border its siblings do not
+## 12. Token naming — carried forward
 
-Node `80:323` carries `border/width/sm` in `color/border/brand-primary` on its
-inner button; `80:328` (lg) and `80:324` (md) carry none. Invisible today because
-the border colour equals the fill, but it makes the sm focus frame 145px wide
-where 143 would follow from its siblings.
+- `color/background/disabled-brand` is `#ffffff80` — it carries alpha without the
+  `a` suffix `CLAUDE.md` describes.
+- `typograghy/font-family/inter` and `typograghy/font-weight/medium-500` are
+  misspelled (`typography`).
 
-**Code:** renders no border on any primary focused — correct for lg and md, 2px
-narrower than the sm symbol.
+**Decision:** rename in Figma and re-run the sync.
 
-**Decision:** drop the border from `80:323`, or add it to all three.
+## 13. Component description — "Don't use button component as tag"
+
+The component set's description ends with that sentence. It is read here as
+"do not use this button as a tag or chip". If it means "do not render an HTML
+`<button>`", say so: the code renders a native `<button>`, which is what gives it
+keyboard focus, disabled behaviour and its accessible role.

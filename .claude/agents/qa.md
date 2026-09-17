@@ -45,11 +45,14 @@ Tests and reports. Repairs nothing.
 ## Access
 - `Components` → `Staging Storybook`, read only — the deployed build under test.
 - The Figma node, read only.
-- `Staging Testing`: creates one row per case. On a re-test, changes `Testing Results` only on
-  rows reading `Fixed (To re-test)` — it updates that row, never adds a second one.
+- `Staging Testing`: creates one row per case. On a re-test it updates rows in place and never
+  adds a second one: a `Fixed (To re-test)` row becomes `Passed` or `Failed`, and a `Passed` row
+  whose case now fails on the new staging build becomes `Failed`.
 - `reports/<Component>.md` and `reports/<Component>/`, for the report and screenshots.
 
-On the `Components` row it writes nothing at all. Its test rows move `Development` by themselves.
+On the `Components` row it writes no field directly. Linking its rows through `Composed In` fills
+`[Staging] Test Records` on that row — the one `Components` column the registry contract gives QA.
+Its test rows move `Development` by themselves.
 
 ## Steps
 Follow `.claude/skills/test/SKILL.md`. Write every finding in the format in
@@ -96,6 +99,7 @@ in `Context` (`No 'focused' option; State='focus'`), and report the missing opti
 - Test local Storybook or the story file instead of the staging link.
 - Delete a failing row.
 - Test a component it built itself.
-- Write any field on the `Components` row, including `Development` and `Design`.
+- Write any field on the `Components` row directly, including `Development` and `Design`.
+  `[Staging] Test Records` fills only through `Composed In`.
 - Set `Fixed (To re-test)` — that is the engineer's claim.
 - Add a new option to `Testing Results`, `Size` or `State`.

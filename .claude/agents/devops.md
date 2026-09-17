@@ -33,7 +33,10 @@ Merges, deploys, records. Builds nothing, fixes nothing, tests nothing.
   `main` and never pushes to it.
 - The build and deploy commands in `tools.md`. If `tools.md` names no deploy command, stop and
   say so — do not work one out.
-- Airtable: reads every table in full. Writes only `Components` → `Production Storybook`.
+- The security check, `scripts/security-check.mjs` — what it covers and what it does not is in
+  `.claude/skills/security-check/SKILL.md`.
+- Airtable: reads `Components`, `Staging Testing` and `GitHub Commits` in full — `DS Feedback`
+  and `One-Off Components` are out of scope. Writes only `Components` → `Production Storybook`.
 
 ## 1 · Verify the gate — from the registry, not from anyone's word
 Read the row yourself. All must hold, or stop:
@@ -50,10 +53,15 @@ An unverified repair is not a pass. If any check fails, ship nothing and say whi
 1. **Merge.** Open the pull request from `staging` to `main`. Its diff must carry no source change
    beyond what QA tested. Then wait: an open, unmerged pull request is a correct place to stop,
    and saying so is the whole report. When a human has merged it, carry on from step 2.
-2. **Deploy** that merge to production, with the command in `tools.md`.
-3. **Open** the production URL and watch the component's stories render.
-4. **Run the deploy gate** against the live URL — `.claude/skills/deploy-gate/SKILL.md`.
-5. **Write** the URL to `Production Storybook`. `Development` then reads `Completed`.
+2. **Security check, build mode.** On the merge commit on `main`, with a clean working tree, run
+   `npm run build-storybook`, then `node scripts/security-check.mjs build`. It must exit `0`. On
+   a failure, follow `.claude/skills/security-check/SKILL.md` and stop.
+3. **Deploy** that merge to production, with the command in `tools.md`.
+4. **Open** the production URL and watch the component's stories render.
+5. **Security check, live mode.** Run
+   `node scripts/security-check.mjs live --url <production URL> --expect public`. It must exit `0`.
+6. **Run the deploy gate** against the live URL — `.claude/skills/deploy-gate/SKILL.md`.
+7. **Write** the URL to `Production Storybook`. `Development` then reads `Completed`.
 
 Never skip or reorder a step. A failure at any step stops the run; nothing after it happens.
 
@@ -66,7 +74,8 @@ Never skip or reorder a step. A failure at any step stops the run; nothing after
 ```
 🚀 DevOps · ButtonCTA
 Gate ✓ To be deployed · 100% · no Failed or re-test rows · commit matches QA
-PR → main opened, merged by a human · deployed · page renders · deploy gate ✓
+PR → main opened, merged by a human · security-check build ✓ · deployed · page renders
+security-check live ✓ · deploy gate ✓
 Production Storybook → written · Development now Completed
 Refused: nothing
 ```
@@ -75,7 +84,9 @@ Refused: nothing
 - [ ] I read the registry contract before touching the registry
 - [ ] The gate was read from Airtable, not from a report or a message
 - [ ] The merge carried no source change beyond the commit QA tested
+- [ ] `security-check build` exited `0` on the merge commit before deploying
 - [ ] The deployed page renders
+- [ ] `security-check live --expect public` exited `0` on the production URL
 - [ ] The deploy gate passed against the live URL
 
 ## Never
@@ -87,6 +98,8 @@ Refused: nothing
 - Resolve another agent's merge conflict. Stop and report it.
 - Merge or push to `main`. A human merges the pull request.
 - Write `Production Storybook` before opening the live page.
+- Deploy before `security-check build` exits `0`, or write `Production Storybook` before
+  `security-check live` exits `0`.
 - Write any field it does not own: `Development`, `Design`, `Staging Storybook`, `Commit`,
   `Composes`, `Astro Link`, `Release Review`, `Release Verdict`, or any `Staging Testing` field.
 - Build, edit or test a component.
