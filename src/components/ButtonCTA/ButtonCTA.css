@@ -1,17 +1,25 @@
 /**
  * ButtonCTA — Horizon call-to-action button.
- * Figma: btn-CTA — node 80:359
+ * Figma: ButtonCTA — component set 132:822
  *
- * Every value is a semantic token. Consume a platform entry point
- * (config/css/index.css) for these to resolve.
+ * Every visual value is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve. Dark mode is `[data-theme="dark"]` on an ancestor.
+ *
+ * Where a Figma symbol binds a core primitive and its siblings bind the
+ * semantic token for the same property, the semantic token is used and the
+ * primitive binding is raised in docs/design-findings.md.
  */
 
+/* Auto layout: horizontal, centre/centre, hug width, fixed height. */
 .horizon-btn-cta {
   box-sizing: border-box;
   display: inline-flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-gap-xs);
+  margin: 0;
   border: 0;
   border-radius: var(--border-radius-sm);
   background-color: transparent;
@@ -24,6 +32,7 @@
   font-size: var(--title-sm-font-size);
   line-height: var(--title-sm-line-height);
   letter-spacing: var(--title-sm-letter-spacing);
+  text-align: center;
   white-space: nowrap;
   color: inherit;
 }
@@ -33,6 +42,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 /* ---------------------------------------------------------------- sizes -- */
@@ -53,10 +63,10 @@
 }
 
 /*
- * The `font-variation-settings` axes below are Material Symbols renderer
- * settings, not design values, and the token layer defines none — exemption
- * recorded in docs/exemptions.md. `opsz` tracks the icon size; the axis floor is
- * 20, which is why the 16px icon asks for 20.
+ * The `font-variation-settings` axes are Material Symbols renderer settings, not
+ * design values, and the token layer defines none — exemption recorded in
+ * docs/exemptions.md. `opsz` tracks the icon size; the axis floor is 20, which
+ * is why the `sm` icon (size-icon-sm) asks for 20.
  */
 .horizon-btn-cta--lg .horizon-btn-cta__icon {
   width: var(--size-icon-lg);
@@ -79,7 +89,7 @@
   font-variation-settings: 'opsz' 20, 'wght' 400, 'FILL' 0, 'GRAD' 0;
 }
 
-/* -------------------------------------------------------------- primary -- */
+/* ------------------------------------------------------------- idle -- */
 
 .horizon-btn-cta--primary {
   background-color: var(--color-background-interactive-white-foreground-brand-idle);
@@ -90,11 +100,47 @@
   color: var(--color-icon-white);
 }
 
+.horizon-btn-cta--secondary {
+  border: var(--border-width-sm) solid var(--color-border-brand-primary);
+  color: var(--color-text-brand);
+}
+
+.horizon-btn-cta--secondary .horizon-btn-cta__icon {
+  color: var(--color-icon-brand);
+}
+
+/* ---------------------------------------------------------------- focused -- */
+
 /*
- * Hover and press are prototype interactions Figma wires onto the idle button
- * only, so they key off `is-interactive`, which nothing but idle carries. That
- * keeps focused, destructive and disabled inert under the pointer, and keeps a
- * pinned documentation state from repainting when the mouse crosses it.
+ * Figma draws focus as a wrapping frame: a `border/width/md` stroke in
+ * `color/border/brand-secondary`, `spacing/padding/xxs` clear of the button, with
+ * `border/radius/md` on its outer edge. `outline` + `outline-offset` is that
+ * geometry without a wrapper element, and without shifting layout on focus. CSS
+ * derives the outline's curve from the button's radius: radius-sm + offset +
+ * width resolves to radius-md's value today, but it does not reference
+ * radius-md. Raised in docs/design-findings.md.
+ *
+ * Declared before hover and press, so pointer feedback still shows on a focused
+ * button. Disabled buttons cannot take focus.
+ */
+.horizon-btn-cta:focus-visible,
+.horizon-btn-cta.is-focused {
+  outline: var(--border-width-md) solid var(--color-border-brand-secondary);
+  outline-offset: var(--spacing-padding-xxs);
+}
+
+.horizon-btn-cta--secondary:not(.horizon-btn-cta--destructive):focus-visible,
+.horizon-btn-cta--secondary.is-focused {
+  background-color: var(--color-background-base);
+}
+
+/* ---------------------------------------------------- hovered and pressed -- */
+
+/*
+ * Figma wires ON_HOVER and ON_PRESS onto the idle symbols only, so these key off
+ * `is-interactive`, which nothing but idle carries. Disabled and destructive stay
+ * inert under the pointer, and a pinned documentation state does not repaint
+ * when the mouse crosses it.
  */
 .horizon-btn-cta--primary.is-interactive:hover,
 .horizon-btn-cta--primary.is-hovered {
@@ -106,30 +152,20 @@
   background-color: var(--color-background-interactive-white-foreground-brand-pressed);
 }
 
-/* ------------------------------------------------------------ secondary -- */
-
-.horizon-btn-cta--secondary {
-  border: var(--border-width-sm) solid var(--color-border-brand-primary);
-  color: var(--color-text-brand);
-}
-
-.horizon-btn-cta--secondary .horizon-btn-cta__icon {
-  color: var(--color-icon-brand);
-}
-
 .horizon-btn-cta--secondary.is-interactive:hover,
 .horizon-btn-cta--secondary.is-hovered {
   background-color: var(--color-background-interactive-dark-foreground-brand-idle);
 }
 
 /*
- * Figma's secondary/pressed (80:350) drops the 1px border, which shrinks the
- * button by 2px mid-press. The border is kept and tinted to the fill instead,
- * so the outer box stays put. Raised in docs/design-findings.md.
+ * Figma's secondary pressed symbols draw no stroke, which would make the button
+ * two border widths narrower mid-press. The border is kept but made transparent; the fill
+ * paints underneath it, so the box holds still and no stroke is seen. Raised in
+ * docs/design-findings.md.
  */
 .horizon-btn-cta--secondary.is-interactive:active,
 .horizon-btn-cta--secondary.is-pressed {
-  border-color: var(--color-background-interactive-white-foreground-brand-idle);
+  border-color: transparent;
   background-color: var(--color-background-interactive-white-foreground-brand-idle);
   color: var(--color-text-white);
 }
@@ -141,7 +177,6 @@
 
 /* ---------------------------------------------------------- destructive -- */
 
-/* Resting only — the design defines no hover or press response for these. */
 .horizon-btn-cta--primary.horizon-btn-cta--destructive {
   background-color: var(--color-background-interactive-white-foreground-danger-idle);
   color: var(--color-text-white);
@@ -149,31 +184,11 @@
 
 .horizon-btn-cta--secondary.horizon-btn-cta--destructive {
   border-color: var(--color-border-danger-primary);
-  background-color: transparent;
   color: var(--color-text-danger);
 }
 
 .horizon-btn-cta--secondary.horizon-btn-cta--destructive .horizon-btn-cta__icon {
   color: var(--color-icon-danger);
-}
-
-/* ---------------------------------------------------------------- focus -- */
-
-/*
- * Figma draws focus as a wrapping frame: a 2px brand-secondary border at
- * radius-md, 2px clear of the button. `outline` + `outline-offset` is the same
- * geometry without a wrapper element; the ring's corner radius resolves to
- * 10px rather than the designed 12px. Raised in docs/design-findings.md.
- */
-.horizon-btn-cta:focus-visible,
-.horizon-btn-cta.is-focused {
-  outline: var(--border-width-md) solid var(--color-border-brand-secondary);
-  outline-offset: var(--spacing-padding-xxs);
-}
-
-.horizon-btn-cta--secondary:focus-visible,
-.horizon-btn-cta--secondary.is-focused {
-  background-color: var(--color-background-base);
 }
 
 /* ------------------------------------------------------------- disabled -- */
@@ -182,7 +197,7 @@
   cursor: not-allowed;
 }
 
-/* White at 50% over the brand fill — the two stacked layers Figma exports. */
+/* `disabled-brand` (white at 50%) stacked over the brand fill — Figma's two fills. */
 .horizon-btn-cta--primary:disabled {
   background-color: var(--color-background-interactive-white-foreground-brand-idle);
   background-image: linear-gradient(
@@ -198,7 +213,6 @@
 
 .horizon-btn-cta--secondary:disabled {
   border-color: var(--color-border-disabled);
-  background-color: transparent;
   color: var(--color-text-disabled-secondary);
 }
 
