@@ -11,7 +11,7 @@
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 // --- patterns ------------------------------------------------------------
@@ -71,7 +71,17 @@ function readText(path) {
 }
 
 function run(cmd, args, cwd) {
-  return spawnSync(cmd, args, { cwd, encoding: 'utf8', shell: process.platform === 'win32', timeout: 120000 });
+  return spawnSync(cmd, args, { cwd, encoding: 'utf8', timeout: 120000, maxBuffer: 64 * 1024 * 1024 });
+}
+
+/** npm's own CLI script, run through this Node — no shell, so no argument is ever re-parsed. */
+function npmCli() {
+  const bin = dirname(process.execPath);
+  return [
+    process.env.npm_execpath,
+    join(bin, 'node_modules', 'npm', 'bin', 'npm-cli.js'),
+    join(bin, '..', 'lib', 'node_modules', 'npm', 'bin', 'npm-cli.js'),
+  ].find((p) => p && p.endsWith('.js') && existsSync(p));
 }
 
 /** Private identifiers the project actually uses, from the gitignored registry config. */
@@ -208,8 +218,10 @@ function buildMode(args) {
   const clientCode = build.filter((s) => /\.(m?js|cjs|html|map)$/.test(s.label));
   record('environment leakage', [...committedEnv, ...scanEnvLeaks(clientCode, secretEnvValues(root))]);
 
-  const audit = run('npm', ['audit', '--json'], root);
   try {
+    const cli = npmCli();
+    if (!cli) throw new Error('npm CLI not found beside this Node');
+    const audit = run(process.execPath, [cli, 'audit', '--json'], root);
     const json = JSON.parse(audit.stdout);
     if (json.error) throw new Error(json.error.summary || json.error.code);
     const v = json.metadata.vulnerabilities;
