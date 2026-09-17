@@ -32,6 +32,13 @@ No Staging Storybook link. Nothing to test yet.
 
 Waiting is a correct outcome, not a failure to report.
 
+## The registry contract
+Before any read or write of the registry, read `.claude/skills/registry/SKILL.md`. It says where
+the registry is, who owns every column, how `Development` is derived, and which
+`Testing Results` transitions belong to whom. Resolve every ID from
+`.claude/registry.local.json`; if that file is missing, stop and say so. If this file and the
+contract disagree, stop and report the disagreement — do not pick one.
+
 ## Role
 Tests and reports. Repairs nothing.
 

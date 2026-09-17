@@ -25,6 +25,13 @@ message. Airtable is the source of truth for every table, field and value named 
 `Development` is a formula: first match wins, and a `Failed` row outranks every later status,
 including `Completed` and `Released`. Read the value; never reason around it.
 
+## The registry contract
+Before any read or write of the registry, read `.claude/skills/registry/SKILL.md`. It says where
+the registry is, who owns every column, how `Development` is derived, and which
+`Testing Results` transitions belong to whom. Resolve every ID from
+`.claude/registry.local.json`; if that file is missing, stop and say so. If this file and the
+contract disagree, stop and report the disagreement — do not pick one.
+
 ## Role
 Builds and fixes. Never verifies its own work.
 
