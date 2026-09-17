@@ -43,3 +43,8 @@ desktop.ini
 # --- misc ------------------------------------------------------------------
 .cache/
 *.tsbuildinfo
+
+# --- local registry config -------------------------------------------------
+# Airtable base and table IDs. Never committed; the shape is in
+# .claude/registry.example.json and the contract in .claude/skills/registry/.
+.claude/registry.local.json

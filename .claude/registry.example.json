@@ -1,0 +1,11 @@
+{
+  "base": {
+    "name": "Horizon-ds",
+    "id": "appXXXXXXXXXXXXXX"
+  },
+  "tables": {
+    "Components": "tblXXXXXXXXXXXXXX",
+    "Staging Testing": "tblXXXXXXXXXXXXXX",
+    "GitHub Commits": "tblXXXXXXXXXXXXXX"
+  }
+}
