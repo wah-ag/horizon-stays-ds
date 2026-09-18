@@ -67,10 +67,41 @@ prevent.
 | Case | `Component/Sub Component`, `Variants`, `Size`, `State` |
 | Expected and Source | `Expected Results` |
 | Saw and Where | `Suggestion for Improvement` |
-| Theme, story, staging build, commit, substitutions | `Context` |
+| The screenshot of the failing case | `Attachment` |
+| Theme, story, staging build, commit, substitutions, screenshot path | `Context` |
 
-A pass uses the same shape: `Suggestion for Improvement` says what was measured and which token it
-resolved to, so the pass can be checked later.
+## In the row: bullets, not prose
+A row is read at a glance, in a narrow cell. Write facts, not sentences:
+
+- One fact per bullet, at most four bullets per field.
+- Name the token or the prop. Sizes as `w × h`.
+- No preamble, no "it appears that", no repeating the case.
+
+```
+Expected Results
+• Border: 1px --color-border-brand-primary
+• Size: 117 × 32
+• Source: Figma 132:957 (primary/sm/focused)
+
+Suggestion for Improvement
+• Saw: no border, 114.11 × 32
+• Where: ButtonCTA.css, .horizon-btn-cta--primary:focus-visible
+• Fix: add the 1px border — or fix the node, since lg and md have none
+```
+
+The long form belongs in `reports/<Component>.md`, not in the cell.
+
+## A pass writes nothing but its result
+A `Passed` row leaves `Expected Results`, `Suggestion for Improvement` and `Attachment` **empty**.
+Its evidence is the screenshot named in `Context`. A green row means QA tested that case on the
+deployed build and it matched the node — nothing to read, nothing to act on.
+
+## The screenshot
+`Attachment` carries the failing case's screenshot, and only a failing case's. Airtable attaches
+from a URL and this connection cannot upload a local file, so the file is committed on QA's
+`qa/…` branch and attached by its commit-sha `raw.githubusercontent.com` URL — never a branch
+URL, which moves. If that is not possible, `Attachment` stays empty, the path stays in `Context`,
+and QA says so in its report.
 
 ## Self-check
 - [ ] The case names component, variant, size and state
@@ -78,4 +109,6 @@ resolved to, so the pass can be checked later.
 - [ ] Saw names a token or prop; any raw value sits beside one, never alone
 - [ ] Where points at a file and selector, or a story
 - [ ] An engineer could act on it without asking a question
+- [ ] The row is bullets, four or fewer per field, with no sentences
+- [ ] A failure carries its screenshot; a pass carries none, and no finding fields
 - [ ] A design gap is called a gap, not logged against the engineer
