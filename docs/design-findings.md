@@ -22,18 +22,20 @@ resolve to 48px today, so nothing looks wrong.
 scale ever moves independently of the raw sizing ramp, they silently stop
 tracking the others.
 
-## 2. Secondary loses its border when pressed
+## 2. Secondary loses its border when pressed — RESOLVED
 
-`secondary/pressed` has no border at **any** size, while all five other
-`secondary` states carry `border/width/sm`. Each pressed frame is 2px narrower
-than its siblings — lg 159 vs 161 (80:350), md 143 vs 145 (80:351), sm 135 vs
-137 (80:333) — so the button shrinks at the moment of press in all three sizes.
+Originally: `secondary/pressed` carried no border at any size, so the frame was
+2px narrower than its siblings and the button shrank at the moment of press.
 
-**Code:** keeps the 1px border and tints it to the fill, so the outer box is
-stable and the button reads as borderless.
+The designer has since redesigned `secondary/pressed` as an **outlined** button
+— no fill, a 1px stroke in `color/border/brand-hovered`, label on
+`color/text/brand-hovered` and icon on `color/icon/brand-hovered` — at the same
+box as idle: lg 133x48 (132:823), md 121x40 (132:855), sm 117x32 (132:875).
 
-**Decision:** confirm this was unintentional. If the shrink is wanted, say so and
-it goes back in.
+**Code:** overrides only the border colour, the label colour and the icon colour
+on press, and clears the hover fill. The border width stays the one declaration
+`secondary` already carries, so nothing moves mid-press. The previous
+tint-the-border workaround has been removed.
 
 ## 3. Focus ring corner radius
 
@@ -152,3 +154,35 @@ where 143 would follow from its siblings.
 narrower than the sm symbol.
 
 **Decision:** drop the border from `80:323`, or add it to all three.
+
+## 13. `secondary/pressed` leaves its stroke weight unbound
+
+The three redesigned pressed symbols — `132:823` (lg), `132:855` (md),
+`132:875` (sm) — bind their stroke **colour** to `color/border/brand-hovered`
+but bind no variable to the stroke **weight**; it is a raw `1`. Every other
+`secondary` state binds `border/width/sm`, including the idle symbols the
+pressed ones are now sized to match (`132:895`, `132:907`, `132:919`).
+
+**Code:** nothing was substituted. The pressed rule overrides `border-color`
+only, so the width keeps coming from the one `border/width/sm` binding that
+`secondary` already carries. The gap is invisible today because both are 1px.
+
+**Decision:** bind the stroke weight of all three to `border/width/sm` in Figma.
+If the border ramp ever moves, the pressed symbols stop tracking the others and
+the button changes size mid-press again.
+
+## 14. Node still shows `color/text/brand` where the export ships `-idle`
+
+The `secondary` idle, hovered and focused symbols (`132:895`, `132:907`,
+`132:919`, `132:961`, `132:965`, `132:969`, `132:931`, `132:941`, `132:946`)
+read their label and icon from `color/text/brand` and `color/icon/brand`.
+Today's export (`tokens/`, token sync `1ff7261`, PR #30) contains neither name:
+it ships `color-text-brand-idle` and `color-icon-brand-idle`, at the same value
+`#3b82f6`, alongside the new `-hovered` pair.
+
+**Code:** binds `--color-text-brand-idle` and `--color-icon-brand-idle`, the
+names that exist in the build output. Nothing was invented.
+
+**Decision:** confirm the rename landed on the variables themselves and that the
+old names are gone from the file, not just from the export. If both names exist
+in Figma, retire the unsuffixed pair so nothing can bind to it again.

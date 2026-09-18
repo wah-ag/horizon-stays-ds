@@ -1,6 +1,6 @@
 /**
  * ButtonCTA — Horizon call-to-action button.
- * Figma: btn-CTA — node 80:359
+ * Figma: ButtonCTA — node 132:822
  *
  * Every value is a semantic token. Consume a platform entry point
  * (config/css/index.css) for these to resolve.
@@ -110,11 +110,11 @@
 
 .horizon-btn-cta--secondary {
   border: var(--border-width-sm) solid var(--color-border-brand-primary);
-  color: var(--color-text-brand);
+  color: var(--color-text-brand-idle);
 }
 
 .horizon-btn-cta--secondary .horizon-btn-cta__icon {
-  color: var(--color-icon-brand);
+  color: var(--color-icon-brand-idle);
 }
 
 .horizon-btn-cta--secondary.is-interactive:hover,
@@ -123,20 +123,23 @@
 }
 
 /*
- * Figma's secondary/pressed (80:350) drops the 1px border, which shrinks the
- * button by 2px mid-press. The border is kept and tinted to the fill instead,
- * so the outer box stays put. Raised in docs/design-findings.md.
+ * Secondary/pressed is an outlined button, not an inverted one: no fill, the
+ * 1px border darkened to brand-hovered, and the label and icon on the matching
+ * brand-hovered roles. The box therefore stays exactly the size of idle
+ * (133/121/117 x 48/40/32), which is what the node now draws — 132:823,
+ * 132:855, 132:875. `background-color` is reset here because the hover rule
+ * above matches at the same specificity while the pointer is held down.
  */
 .horizon-btn-cta--secondary.is-interactive:active,
 .horizon-btn-cta--secondary.is-pressed {
-  border-color: var(--color-background-interactive-white-foreground-brand-idle);
-  background-color: var(--color-background-interactive-white-foreground-brand-idle);
-  color: var(--color-text-white);
+  border-color: var(--color-border-brand-hovered);
+  background-color: transparent;
+  color: var(--color-text-brand-hovered);
 }
 
 .horizon-btn-cta--secondary.is-interactive:active .horizon-btn-cta__icon,
 .horizon-btn-cta--secondary.is-pressed .horizon-btn-cta__icon {
-  color: var(--color-icon-white);
+  color: var(--color-icon-brand-hovered);
 }
 
 /* ---------------------------------------------------------- destructive -- */

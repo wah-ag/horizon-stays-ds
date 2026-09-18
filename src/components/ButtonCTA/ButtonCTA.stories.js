@@ -2,7 +2,7 @@
  * ButtonCTA stories.
  *
  * FIGMA NODE — QA tests against this, not against this file:
- * https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=80-359
+ * https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=132-822
  *
  * The pickable matrix is 2 types x 3 sizes x 3 resting states = 18 rows, one
  * story each, named <Type><Size><State>.

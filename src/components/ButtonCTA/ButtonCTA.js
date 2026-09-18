@@ -1,8 +1,8 @@
 /**
  * ButtonCTA — Horizon call-to-action button.
  *
- * Figma: btn-CTA — node 80:359
- * https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=80-359
+ * Figma: ButtonCTA — node 132:822
+ * https://www.figma.com/design/T1W7l8fmInchVupyLK7sW9/HorizonStays.Global.Component.V1.0.In-Progress?node-id=132-822
  *
  * Prop names are the Figma property names verbatim, per `CLAUDE.md`. `type`
  * collides with the native `<button type>` attribute — the DOM attribute is set
