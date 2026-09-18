@@ -48,3 +48,9 @@ desktop.ini
 # Airtable base and table IDs. Never committed; the shape is in
 # .claude/registry.example.json and the contract in .claude/skills/registry/.
 .claude/registry.local.json
+
+# --- QA evidence -----------------------------------------------------------
+# reports/<Component>.md and its screenshots are written by QA on every run and
+# are never committed (see .claude/agents/qa.md). Ignored so the security check,
+# which fails on any uncommitted or untracked change, stays runnable.
+reports/

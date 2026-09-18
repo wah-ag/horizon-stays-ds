@@ -25,9 +25,31 @@ Stack facts and commands only. Rules about how we work live in `CLAUDE.md`.
 | Build tokens | `npm run build:tokens` |
 | Run Storybook | `npm run storybook` (port 6006) |
 | Build Storybook | `npm run build-storybook` |
+| Security check | `node scripts/security-check.mjs build` · `node scripts/security-check.mjs live --url <url> --expect public\|protected` |
+| Deploy | **No command.** Vercel deploys from git — see below. |
 
 `npm run build` is an alias of `npm run build:tokens`. Both Storybook scripts
 run the token build first, so the docs can never render a stale build.
+
+## Deploying
+
+There is nothing to run. Vercel's Git integration builds this repo, so
+"deploy" means pushing and then verifying the build Vercel made:
+
+- Merging to `main` builds **production**; the stable address is
+  `https://horizon-stays-ds-doy7.vercel.app`.
+- Pushing to `staging` builds a **preview**, whose deployment-specific URL is
+  what goes in the registry's `Staging Storybook`.
+- Preview deployments are public: no login wall, so QA and the PM can open a
+  staging link, and `security-check live --expect public` passes.
+- The Vercel project is **`horizon-stays-ds-doy7`**. Two other Vercel projects,
+  `horizon-stays-ds` and `horizon-stays-ds-5777`, also build from this repo and
+  fail every time — ignore them, or delete them in Vercel.
+- The Vercel connection cannot see this team, so find a deployment through
+  GitHub instead:
+  `gh api repos/wah-ag/horizon-stays-ds/deployments?sha=<sha>` then
+  `/statuses` — take the one whose environment names `horizon-stays-ds-doy7`
+  and whose state is `success`.
 
 **`npm run build:tokens:legacy` is broken** — it points at `build-tokens.js`,
 which does not exist. Do not use it; delete it or restore the file.
