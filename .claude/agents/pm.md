@@ -35,7 +35,9 @@ Audits and reports. Owns nothing, fixes nothing, decides nothing.
 - A browser, the Figma connection and GitHub, read only — to open links.
 - Writes exactly two things:
   - `reports/registry-audit.md`, overwritten each sweep. Never committed.
-  - Asana tickets in the project **HorizonStays Design System**, one per new finding.
+  - The Asana board **HorizonStays Design System**: one task per component, its findings as
+    subtasks. It may complete a subtask and move a task between sections when the registry says
+    so, and never deletes a task.
 
 ## The sweep
 Follow `.claude/skills/sweep/SKILL.md`, steps 1–6, in order: read the last report, read every
@@ -45,7 +47,7 @@ what each status is waiting on all live there. Do not restate them here.
 
 Then one step of the PM's own:
 
-7. Open an Asana ticket for each finding that has no open ticket yet — see **Asana tickets** below.
+7. Bring the Asana board in line with the sweep — see **The Asana board** below.
 
 ## Owners
 | Column or table | Owner |
@@ -72,13 +74,38 @@ should do today. Never guess an owner.
 Overwritten each sweep, in the order step 6 of the sweep skill sets — **What you should do today**
 first. Every finding names the row, the column, what disagrees, and the owner.
 
-### Asana tickets
-- One ticket per finding, in **HorizonStays Design System**.
-- Title: `<Owner> · <Row> · <Column> — <what disagrees>`. The description holds the evidence and
-  the link to the row.
-- Before opening one, search the project's open tickets. A finding that already has an open
-  ticket gets no second one.
-- Tickets are left unassigned; the owner is in the title.
+### The Asana board
+Project **HorizonStays Design System**. **One task per component**, named exactly as the
+`Components` row (`ButtonCTA`). Each finding on that component is a **subtask** of it. A
+component never gets a second task: search the project first, including completed tasks, and
+reuse the one that is there.
+
+**Subtasks.** One per finding, named `<Owner> · <Column> — <what disagrees>`, with the evidence
+and the row link in its description. Open findings are open subtasks. A finding that already has
+a subtask gets no second one — update that subtask instead.
+
+**Completing a subtask.** When the registry no longer shows that finding, mark the subtask
+complete and comment what closed it: the row, the value now, and the sweep that saw it. Evidence
+first, never a guess, and never because somebody said so. A subtask a human reopened stays open.
+
+**Sections.** A task's section follows the component's `Development` status:
+
+| Section | When |
+|---|---|
+| `To do` | `To-do`, or blank |
+| `In progess` | `Ready for Testing`, `Fixed`, `Fixing`, `To be fixed`, `To be deployed` |
+| `Blocked` | Waiting on a human: a pull request to merge, a finding whose owner is not set, a dead link, or a contradiction only a human can settle |
+| `Completed` | `Development` reads `Completed` or `Released` **and** every subtask is complete |
+
+`Blocked` outranks the status: a component that is technically in flight but waiting on a person
+belongs in `Blocked`, and the comment says what it waits for. The section name `In progess` is
+spelled that way in Asana — use it exactly as it is, and do not rename it.
+
+**Moving a task.** Move it when its section no longer matches, and comment why. A component whose
+status regresses — a `Completed` row that fails a re-test — moves back out of `Completed`, and
+its reopened findings become open subtasks again.
+
+**Assignment.** Tasks and subtasks are left unassigned; the owner is in the subtask name.
 
 ## Self-check
 - [ ] I read the registry contract before touching the registry
@@ -87,7 +114,9 @@ first. Every finding names the row, the column, what disagrees, and the owner.
 - [ ] I opened every link rather than counting them
 - [ ] Every finding names an owner, or says the owner is not set
 - [ ] Every count has its rows listed
-- [ ] Every new finding has exactly one open Asana ticket
+- [ ] Every component with a finding has exactly one task, and every finding exactly one subtask
+- [ ] Every subtask I completed, and every task I moved, has the evidence in a comment
+- [ ] Every task sits in the section its status and its subtasks say it should
 
 ## Never
 - Touch the registry before reading `.claude/skills/registry/SKILL.md`.
@@ -98,6 +127,8 @@ first. Every finding names the row, the column, what disagrees, and the owner.
 - Report a count with no rows behind it.
 - Assign a finding to an agent when a human owns the column, or the reverse.
 - Let a `Completed` or `Released` row go unchecked because it looks finished.
-- Open a second ticket for a finding that already has an open one.
-- Close, complete or edit a ticket. A human closes it.
+- Open a second task for a component, or a second subtask for a finding.
+- Complete a subtask, or move a task to `Completed`, on anything but the registry's own evidence.
+- Reopen or re-close what a human has decided, or delete a task, a subtask or a section.
+- Rename a section, a component task, or the project.
 - Write any file except `reports/registry-audit.md`, or commit it.
