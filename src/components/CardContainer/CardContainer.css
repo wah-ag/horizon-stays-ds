@@ -1,0 +1,54 @@
+/**
+ * CardContainer — Horizon card shell.
+ * Figma: CardContainer — component set 118:286
+ *
+ * Every visual value is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve. Dark mode is `[data-theme="dark"]` on an ancestor: both
+ * `--color-background-base` and `--color-border-secondary` ship in the
+ * on-light and on-dark modes, so the cascade repaints the card and nothing
+ * here branches on theme.
+ *
+ * Where the two symbols bind different variables to the same property, the
+ * properly-named one is used and the other is raised in docs/design-findings-cardcontainer.md
+ * rather than reproduced. Nothing the design left unbound is filled in here.
+ */
+
+/* Auto layout: vertical, start-aligned, hug height, clipped content. */
+.horizon-card-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /*
+   * The node draws the container at a raw 301px bound to no variable — the
+   * width of the frame it was laid out in, not a design decision. A container
+   * fills what it is given instead; raised in docs/design-findings-cardcontainer.md.
+   */
+  width: 100%;
+  padding: var(--spacing-padding-md) var(--spacing-padding-lg);
+  border: var(--border-width-sm) solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-background-base);
+  overflow: hidden;
+}
+
+/* Node 118:288, "cardItems" — fill width, height from its own content. */
+.horizon-card-container__items {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- hovered -- */
+
+/*
+ * The only difference between the two symbols: `Elevation/level1` appears, and
+ * nothing moves. The token is the composite effect, so the two stacked shadows
+ * come from one reference.
+ *
+ * `is-interactive` is carried by idle alone, so a card pinned to `hovered` for
+ * the docs does not repaint under the pointer.
+ */
+.horizon-card-container.is-interactive:hover,
+.horizon-card-container.is-hovered {
+  box-shadow: var(--elevation-level1);
+}
