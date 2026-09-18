@@ -102,11 +102,14 @@ Two agents write this column. Each may make only its own transitions, only on it
 | `Failed` | `Fixed (To re-test)` | Engineer | The Engineer repaired that case, deployed it to staging, opened the page, and rewrote `Staging Storybook`. |
 | `Fixed (To re-test)` | `Passed` or `Failed` | QA | QA re-tested that case on the deployed staging build. The row is updated in place. |
 | `Passed` | `Failed` | QA | A regression re-test failed. The row is updated in place. |
+| `Failed` | `Passed` | QA | **A design-side fix.** The node changed, the code did not, and QA re-tested that case on the same deployed staging build and found it now matches the updated node. The row is updated in place, and `Context` names what changed in the node. |
 
 No other transition exists. In particular:
 - The Engineer never writes `Passed` or `Failed`, never touches a row it did not repair, and never
   creates a row.
 - QA never writes `Fixed (To re-test)`.
+- A `Failed` row clears only through a fresh measurement — the Engineer's repair, re-tested, or
+  QA's own design-side re-test. Never because somebody says the design has been fixed.
 - Nobody sets `Testing Results` blank, and nobody deletes a row.
 - Nobody adds an option. The options are exactly `Passed`, `Failed`, `Fixed (To re-test)`.
 

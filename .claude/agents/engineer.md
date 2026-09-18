@@ -22,6 +22,11 @@ message. Airtable is the source of truth for every table, field and value named 
 
 `Fixed` and `Fixing` wake QA, not you. If `Development` is blank, there is nothing to build.
 
+Read each `Failed` row before you repair anything. A row whose finding is a design gap that a
+human then fixed in the node is not yours: nothing in the code changed, and QA clears it on a
+design-side re-test. Repair only the rows that show a defect in the code, and say which rows you
+left alone and why.
+
 `Development` is a formula: first match wins, and a `Failed` row outranks every later status,
 including `Completed` and `Released`. Read the value; never reason around it.
 

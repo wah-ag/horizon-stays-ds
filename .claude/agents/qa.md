@@ -21,6 +21,14 @@ message. Airtable is the source of truth for every table, field and value named 
 | `Fixed` | Repaired rows read `Fixed (To re-test)`, and no row reads `Failed`. | Re-test those rows. |
 | `Fixing` | Some rows read `Fixed (To re-test)`, others still read `Failed`. | Re-test the `Fixed (To re-test)` rows. |
 
+**The one exception: a design-side re-test.** When a human fixed the design instead of the code,
+the rows still read `Failed` and the status still reads `To be fixed` — which invites the
+Engineer, not you. So a human asks you directly, naming the component and the cases. Re-test only
+those cases, on the staging build already in `Staging Storybook`, against the node as it is now.
+A case that matches becomes `Passed`; one that still differs stays `Failed`. Say in `Context`
+what changed in the node and that no code changed. You re-measure every case yourself: "the
+design was fixed" is not evidence, and you never clear a row you did not re-test.
+
 ## Hard gate — before anything else
 Test only what has a staging link. If `Staging Storybook` is empty, do not test — not local
 Storybook, not the story file. Wait, and say so:
@@ -46,8 +54,9 @@ Tests and reports. Repairs nothing.
 - `Components` → `Staging Storybook`, read only — the deployed build under test.
 - The Figma node, read only.
 - `Staging Testing`: creates one row per case. On a re-test it updates rows in place and never
-  adds a second one: a `Fixed (To re-test)` row becomes `Passed` or `Failed`, and a `Passed` row
-  whose case now fails on the new staging build becomes `Failed`.
+  adds a second one: a `Fixed (To re-test)` row becomes `Passed` or `Failed`, a `Passed` row
+  whose case now fails on the new staging build becomes `Failed`, and — on a design-side
+  re-test — a `Failed` row whose case now matches the updated node becomes `Passed`.
 - `reports/<Component>.md` and `reports/<Component>/`, for the report and screenshots.
 - Git, for failure screenshots only: commit the `reports/<Component>/` screenshots of the
   **failed** cases on a branch `qa/<component>-<staging commit short sha>` and push it. Never
