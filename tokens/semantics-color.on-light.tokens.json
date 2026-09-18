@@ -11,6 +11,10 @@
     "$type": "color",
     "$value": "{color-blue-500}"
   },
+  "color-border-brand-hovered": {
+    "$type": "color",
+    "$value": "{color-blue-700}"
+  },
   "color-border-brand-secondary": {
     "$type": "color",
     "$value": "{color-blue-400}"
@@ -75,9 +79,13 @@
     "$type": "color",
     "$value": "{color-grey-300}"
   },
-  "color-icon-brand": {
+  "color-icon-brand-idle": {
     "$type": "color",
     "$value": "{color-blue-500}"
+  },
+  "color-icon-brand-hovered": {
+    "$type": "color",
+    "$value": "{color-blue-700}"
   },
   "color-icon-info": {
     "$type": "color",
@@ -115,9 +123,13 @@
     "$type": "color",
     "$value": "{color-grey-900}"
   },
-  "color-text-brand": {
+  "color-text-brand-idle": {
     "$type": "color",
     "$value": "{color-blue-500}"
+  },
+  "color-text-brand-hovered": {
+    "$type": "color",
+    "$value": "{color-blue-700}"
   },
   "color-text-info": {
     "$type": "color",
