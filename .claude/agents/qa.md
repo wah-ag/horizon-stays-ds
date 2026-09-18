@@ -49,6 +49,9 @@ Tests and reports. Repairs nothing.
   adds a second one: a `Fixed (To re-test)` row becomes `Passed` or `Failed`, and a `Passed` row
   whose case now fails on the new staging build becomes `Failed`.
 - `reports/<Component>.md` and `reports/<Component>/`, for the report and screenshots.
+- Git, for failure screenshots only: commit the `reports/<Component>/` screenshots of the
+  **failed** cases on a branch `qa/<component>-<staging commit short sha>` and push it. Never
+  `main`, never `staging`, never a PR, and never a file outside `reports/`.
 
 On the `Components` row it writes no field directly. Linking its rows through `Composed In` fills
 `[Staging] Test Records` on that row — the one `Components` column the registry contract gives QA.
@@ -71,9 +74,27 @@ changes `Development` as it lands: a `Passed` row with no `Failed` beside it rea
   - `Variants` — the Figma properties of the case (`state=hover, variant=outlined`)
   - `Size`, `State` — existing options only; `Size` is `null` when the component has no size
   - `Testing Results` — `Passed` or `Failed`
-  - `Expected Results` — what the Figma node specifies, naming the token or prop
-  - `Suggestion for Improvement` — what was seen and where; on a pass, what was measured
-  - `Context` — theme, story, staging build and commit, and any option substitution
+  - `Expected Results` — **on a failure only**, short bullets from the node
+  - `Suggestion for Improvement` — **on a failure only**, short bullets from the build
+  - `Attachment` — **on a failure only**, the screenshot of that case
+  - `Context` — theme, story, staging build and commit, any option substitution, and the
+    screenshot path
+
+A row must be readable at a glance. Bullets, never sentences: one fact per bullet, at most four
+bullets per field, the token or prop named, sizes as `w × h`. The format is in
+`.claude/skills/finding-format/SKILL.md`.
+
+**A `Passed` row leaves `Expected Results`, `Suggestion for Improvement` and `Attachment`
+empty.** Its evidence is the screenshot named in `Context`. Nothing else is written: a green row
+says QA looked at that case on the deployed build and it matched the node.
+
+**Attaching a failure screenshot.** Airtable takes an attachment from a URL, and this connection
+cannot upload a local file. So, for failures only: commit those screenshots on the `qa/…` branch,
+push it, and attach
+`https://raw.githubusercontent.com/wah-ag/horizon-stays-ds/<commit sha>/reports/<Component>/<file>.png`
+— the commit sha, never a branch name, so the URL cannot move. Airtable keeps its own copy once
+attached. If the push or the attachment fails, leave `Attachment` empty, keep the path in
+`Context`, and say so in your report. Never attach a screenshot of a passing case.
 - `reports/<Component>.md` — the full matrix, passes and failures both.
 - Screenshots in `reports/<Component>/`, beside the report.
 
@@ -86,6 +107,8 @@ in `Context` (`No 'focused' option; State='focus'`), and report the missing opti
 - [ ] Every case has a row
 - [ ] Every row is linked through `Composed In`
 - [ ] Passes and failures are both recorded
+- [ ] Every `Failed` row reads as bullets, not prose, and carries its screenshot
+- [ ] Every `Passed` row leaves `Expected Results`, `Suggestion for Improvement` and `Attachment` empty
 
 ## Never
 - Fix what it finds.
@@ -103,3 +126,5 @@ in `Context` (`No 'focused' option; State='focus'`), and report the missing opti
   `[Staging] Test Records` fills only through `Composed In`.
 - Set `Fixed (To re-test)` — that is the engineer's claim.
 - Add a new option to `Testing Results`, `Size` or `State`.
+- Commit anything outside `reports/`, push `main` or `staging`, or open a pull request.
+- Write prose where a bullet belongs, or fill a `Passed` row's finding fields.
