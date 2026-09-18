@@ -8,7 +8,7 @@ A human decides these. Nothing here has been renamed unilaterally.
 
 ---
 
-## `type` — ButtonCTA (Figma `btn-CTA`, node 80:359)
+## `type` — ButtonCTA (Figma component set 132:822; first raised on 80:359)
 
 **The collision.** Figma's variant property is `type`, with values `primary` and
 `secondary`. `type` is also a native attribute of `<button>`, where it means
@@ -46,8 +46,37 @@ to let code and design diverge here.
 
 ---
 
-## `btn-CTA` — component name
+## Kebab-case property names — ButtonCTA (component set 132:822)
 
-Not a conflict, recorded for the trail. `btn-CTA` is not a legal PascalCase
-identifier, so the coded component is `ButtonCTA`, chosen over `Button` to leave
-the generic name free for a future base button. Folder `src/components/ButtonCTA/`.
+**What changed.** The redesigned component set names its non-variant properties
+`label-text`, `show-leading-icon`, `show-trailing-icon` and `swap-icon`. The
+previous node used `labelText`, `showLeadingIcon`, `showTrailingIcon` and
+`swapIcon`.
+
+**What was built.** The props match Figma exactly, so they are quoted keys:
+`ButtonCTA({ 'label-text': 'Save', 'show-trailing-icon': true })`. This breaks
+anything calling the old camelCase names; nothing in the repo did besides the
+component's own stories, which were rewritten.
+
+**Why it matters.** Kebab-case is a legal JavaScript object key, but it cannot be
+destructured without renaming, cannot be written as a bare identifier, and does
+not carry over to React, where component props are camelCase by convention.
+
+**Suggestions.**
+
+| Option | Component API | Cost |
+|---|---|---|
+| 1. Keep kebab-case, as built | `'label-text'` etc. | Exact Figma parity. Quoted keys in every call. |
+| 2. Rename in Figma to camelCase | `labelText` etc. | One Figma edit; code follows. Back to the previous API. |
+| 3. Accept both in code | kebab-case and camelCase aliases | Two spellings of one API — an undocumented-behaviour risk. |
+
+**Recommendation:** option 2, so design and code share names that work in code.
+
+**Blocked on:** a designer choosing the spelling.
+
+---
+
+## `btn-CTA` — component name — RESOLVED
+
+The Figma component set is now named `ButtonCTA`, matching the coded component
+and its folder `src/components/ButtonCTA/`.
