@@ -1,0 +1,94 @@
+/**
+ * CardLayout — Horizon card arrangement.
+ * Figma: CardLayout — component set 118:110
+ *
+ * Every visual value is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve.
+ *
+ * This component owns arrangement and nothing else: no fill, no stroke, no
+ * radius, no type, no colour. Both symbols draw the three regions and the gaps
+ * between them; everything visible inside comes from CardImage, CardText and
+ * whatever fills the slot. So there is nothing here for `[data-theme="dark"]`
+ * to repaint — the children carry their own semantic colour and the cascade
+ * reaches them directly.
+ *
+ * The two gaps are the only values the design bound to a variable
+ * (`spacing/gap/sm` on vertical, `spacing/gap/md` on horizontal). The raw 12px
+ * radius and the raw 399px width on the horizontal symbol are bound to nothing
+ * and are raised in docs/design-findings-cardlayout.md rather than reproduced
+ * or replaced with the nearest token.
+ */
+
+/* Auto layout, both symbols: start-aligned, hug height, no clipping.
+ * A layout atom fills what it is given; neither symbol's drawn width is a
+ * design decision (finding 2). */
+.horizon-card-layout {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* ----------------------------------------------------------- vertical -- */
+
+/* 118:109 — column, gap spacing/gap/sm: image over text over slot. */
+.horizon-card-layout--vertical {
+  flex-direction: column;
+  gap: var(--spacing-gap-sm);
+}
+
+/* All three regions fill the column's width and take their own height.
+ * The image's 184px and the slot's 67px on the canvas belong to CardImage and
+ * to whatever fills the slot, not to the arrangement. */
+.horizon-card-layout--vertical > .horizon-card-layout__image,
+.horizon-card-layout--vertical > .horizon-card-layout__text,
+.horizon-card-layout--vertical > .horizon-card-layout__slot {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------- horizontal -- */
+
+/* 118:108 — row, gap spacing/gap/md: image beside a body column. */
+.horizon-card-layout--horizontal {
+  flex-direction: row;
+  gap: var(--spacing-gap-md);
+}
+
+/* The image keeps the size CardImage gives it and never shrinks. */
+.horizon-card-layout--horizontal > .horizon-card-layout__image {
+  flex-shrink: 0;
+}
+
+/*
+ * Frame 118:124 — the body column beside the image. It takes the rest of the
+ * row and stands exactly as tall as the image: the node is drawn at a fixed
+ * 135px, which is the image's own square side, so `align-self: stretch` says
+ * the same thing without hardcoding a number that belongs to CardImage.
+ *
+ * `min-width: 0` so a long title inside CardText wraps instead of pushing the
+ * row wider than its container — the flex default would let it overflow.
+ */
+.horizon-card-layout__body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: var(--spacing-gap-sm);
+}
+
+/* Inside the body: text takes the free height, the slot keeps its own. */
+.horizon-card-layout__body > .horizon-card-layout__text {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.horizon-card-layout__body > .horizon-card-layout__slot {
+  width: 100%;
+  flex-shrink: 0;
+}
