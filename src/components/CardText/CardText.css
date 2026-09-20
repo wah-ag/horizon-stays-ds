@@ -1,0 +1,161 @@
+/**
+ * CardText — Horizon card text block.
+ * Figma: CardText — component 105:116
+ *
+ * Every visual value here is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve. The type roles this component uses — title/md, body/sm and
+ * title/xs — ship in all three type-scale modes, so the same file renders at
+ * web, mobile and back-office sizes with nothing branching in JavaScript.
+ *
+ * Dark mode is `[data-theme="dark"]` on an ancestor. All four colour roles used
+ * here (text/bold, text/secondary, text/update, text/primary) ship in both the
+ * on-light and on-dark modes, so the cascade repaints the block and nothing
+ * here reads a token value to decide something.
+ *
+ * Two things the design left unbound are deliberately absent rather than
+ * guessed — see docs/design-findings-cardtext.md, findings 1 and 5. Read the
+ * comments below before "fixing" them.
+ */
+
+/* ----------------------------------------------------------------- root -- */
+
+/*
+ * 105:116 — auto layout, vertical, start-aligned, hug height.
+ *
+ * The node is drawn at a raw 246px bound to no variable: the width of the frame
+ * it was laid out in, not a design decision. A text block fills what it is
+ * given instead, exactly as CardContainer does with its 301px. Finding 5.
+ */
+.horizon-card-text {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  /*
+   * The node binds this gap to `spacing/4` — a CORE primitive, not a semantic
+   * gap role. The binding is honoured literally rather than swapped for the
+   * nearest semantic token, because swapping would hide the layer mistake: the
+   * value is 8px, which is `--spacing-gap-sm` on web and mobile but
+   * `--spacing-gap-md` on back-office, so no single semantic token carries it
+   * across the modes and any pick would be a guess.
+   *
+   * This is the one place in this file that reaches past the semantic layer,
+   * and it is here only because Figma put it there. Finding 2 asks the designer
+   * to rebind it to a `spacing/gap/*` role; when they do, this line changes to
+   * that role and the comment goes.
+   */
+  gap: var(--spacing-4);
+  /* Long listing names and addresses wrap rather than widening the card. */
+  overflow-wrap: anywhere;
+}
+
+/* -------------------------------------------------------------- heading -- */
+
+/* 104:106 — title over location. */
+.horizon-card-text__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: var(--spacing-gap-xxs);
+}
+
+/* 104:107 — Title. title/md on text/bold. */
+.horizon-card-text__title {
+  margin: 0;
+  width: 100%;
+  font-family: var(--title-md-font-family);
+  font-weight: var(--title-md-font-weight);
+  font-size: var(--title-md-font-size);
+  line-height: var(--title-md-line-height);
+  letter-spacing: var(--title-md-letter-spacing);
+  color: var(--color-text-bold);
+}
+
+/* 104:108 — Location Info. body/sm on text/secondary. */
+.horizon-card-text__location {
+  margin: 0;
+  width: 100%;
+  font-family: var(--body-sm-font-family);
+  font-weight: var(--body-sm-font-weight);
+  font-size: var(--body-sm-font-size);
+  line-height: var(--body-sm-line-height);
+  letter-spacing: var(--body-sm-letter-spacing);
+  color: var(--color-text-secondary);
+}
+
+/* ---------------------------------------------------------------- facts -- */
+
+/* 104:109 — the rating row over the price row. */
+.horizon-card-text__facts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: var(--spacing-gap-xs);
+}
+
+/*
+ * 104:110 and 104:113 — horizontal auto layout, vertically centred.
+ *
+ * NO `gap` HERE, ON PURPOSE. Both rows set a 4px gap in Figma that is bound to
+ * no variable, while their own parent (104:109, above) binds the identical 4px
+ * to `spacing/gap/xs`. An unbound value is a design gap to report, not a
+ * decision to make, so the nearest token is not substituted in and the score
+ * sits flush against its label until the design binds it. Finding 1.
+ *
+ * `white-space: nowrap` is the node's own setting on 104:109 — the score and
+ * its label stay on one line.
+ */
+.horizon-card-text__row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+}
+
+/* 104:111 — Rating Score. title/xs on text/update. */
+.horizon-card-text__rating-score {
+  margin: 0;
+  font-family: var(--title-xs-font-family);
+  font-weight: var(--title-xs-font-weight);
+  font-size: var(--title-xs-font-size);
+  line-height: var(--title-xs-line-height);
+  letter-spacing: var(--title-xs-letter-spacing);
+  color: var(--color-text-update);
+}
+
+/* 104:112 — Rating Info. body/sm on text/secondary. */
+.horizon-card-text__rating-info {
+  margin: 0;
+  font-family: var(--body-sm-font-family);
+  font-weight: var(--body-sm-font-weight);
+  font-size: var(--body-sm-font-size);
+  line-height: var(--body-sm-line-height);
+  letter-spacing: var(--body-sm-letter-spacing);
+  color: var(--color-text-secondary);
+}
+
+/* 104:114 — Price. title/xs on text/primary. */
+.horizon-card-text__price {
+  margin: 0;
+  font-family: var(--title-xs-font-family);
+  font-weight: var(--title-xs-font-weight);
+  font-size: var(--title-xs-font-size);
+  line-height: var(--title-xs-line-height);
+  letter-spacing: var(--title-xs-letter-spacing);
+  color: var(--color-text-primary);
+}
+
+/* 104:115 — Price Info. body/sm on text/secondary. */
+.horizon-card-text__price-info {
+  margin: 0;
+  font-family: var(--body-sm-font-family);
+  font-weight: var(--body-sm-font-weight);
+  font-size: var(--body-sm-font-size);
+  line-height: var(--body-sm-line-height);
+  letter-spacing: var(--body-sm-letter-spacing);
+  color: var(--color-text-secondary);
+}
