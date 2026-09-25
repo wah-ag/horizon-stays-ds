@@ -24,9 +24,11 @@
  * 24px icon, so Figma centres the icon at 8 and the padding is overridden
  * (finding 5). Centring alone reproduces the node.
  *
- * No stroke. The node binds the stroke colour to `color/border/secondary` but
- * leaves the stroke weight a raw `1`, bound to no variable, on both symbols
- * (finding 6). A colour with no width draws nothing, so nothing is drawn.
+ * Stroke: both symbols bind all four stroke weights to `border/width/sm` and
+ * the stroke colour to `color/border/secondary`, aligned INSIDE (finding 6,
+ * resolved). `box-sizing: border-box` keeps the border inside the 40 x 40
+ * box, as an inside stroke does, and flex centring still places the 24px icon
+ * 8 from each outer edge (1 border + 7 inside it).
  */
 .horizon-icon-button {
   box-sizing: border-box;
@@ -39,7 +41,7 @@
   height: var(--sizing-8);
   margin: 0;
   padding: 0;
-  border: 0;
+  border: var(--border-width-sm) solid var(--color-border-secondary);
   border-radius: var(--border-radius-pill);
   background-color: var(--color-background-base);
   cursor: pointer;
