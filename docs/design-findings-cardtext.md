@@ -11,7 +11,8 @@ exists — no hovered, pressed, focused or disabled symbol. That is correct for 
 static text atom and is recorded here only so nobody looks for the missing
 states later.
 
-Its structure, 246 x 86:
+Its structure, 246 x 94 (was 246 x 86 before findings 1 and 3 were resolved in
+the node; the rating and price rows are now 20 tall):
 
 | Node | Name | Role |
 |---|---|---|
@@ -29,9 +30,20 @@ Its structure, 246 x 86:
 Every colour and every type role above resolved to a token that already exists,
 in every mode. Findings 1, 2 and 3 are the values that did not.
 
+**Status (2026-09-25, re-read of the live node):** findings 1 and 3 are
+**resolved** in Figma — see each section. Finding 3 leaves one open design note
+about how the line height is bound. Findings 2, 4, 5, 6 and 7 are unchanged and
+still open.
+
 ---
 
-## 1. The two row gaps are bound to nothing — and the code shows it
+## 1. The two row gaps are bound to nothing — RESOLVED
+
+**Resolved 2026-09-25.** The designer bound both row gaps (104:110, 104:113) to
+`spacing/gap/xs` (4px on web and mobile). `.horizon-card-text__row` now sets
+`gap: var(--spacing-gap-xs)`, and the `Gaps` story, which existed only to show
+the missing gap, has been removed. QA Finding A. The original finding follows
+for the record.
 
 Nodes **104:110** (rating) and **104:113** (price) are horizontal auto layouts
 with a gap of **4px bound to no variable**.
@@ -84,7 +96,24 @@ the core reference goes.
 
 ---
 
-## 3. `title/xs` line height: the node and the token disagree
+## 3. `title/xs` line height: the node and the token disagree — RESOLVED, with an open design note
+
+**Resolved 2026-09-25.** Rating Score (104:111) and Price (104:114) now render
+at a 20px line height, and both rows are 20 tall. That matches
+`--title-xs-line-height` (20px web and mobile, 18px back-office), which the code
+already used, so **no code change** was needed. QA Finding B.
+
+**Open design note — mixed binding.** In Figma these two layers do not use the
+`title/xs` text style. They bind line height to `line-height/title/sm` and font
+size to `font-size/title/xs` as loose variables. `line-height/title/sm` and
+`line-height/title/xs` carry the same value in every mode today (20 / 20 / 18),
+so the render is identical, and the code keeps
+`line-height: var(--title-xs-line-height)` — it is **not** switched to
+`--title-sm-line-height`, because the role here is `title/xs`. If the two scales
+ever diverge, the node and the code will disagree again. **Decision:** apply the
+`title/xs` text style to 104:111 and 104:114 so the binding matches the role.
+
+The original finding follows for the record.
 
 The node renders **Rating Score (104:111)** and **Price (104:114)** at **auto
 leading** — Figma reports `title/xs` as `lineHeight: 100` and the node draws

@@ -41,10 +41,8 @@
  * nothing in this file reads the global, so the shadowing is inert. Raised as
  * finding 6 rather than renamed.
  *
- * The two row gaps the design left unbound are NOT filled in here — see
- * finding 1. The rating and price rows render with no gap on purpose, so the
- * missing binding stays visible instead of being papered over with the nearest
- * token.
+ * The rating and price rows carry `spacing/gap/xs` between the value and its
+ * label, as the node now binds it (finding 1, resolved).
  */
 
 import './CardText.css';
