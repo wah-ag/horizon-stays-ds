@@ -1,0 +1,82 @@
+/**
+ * IconButton — Horizon icon-only button.
+ * Figma: IconButton — component set 114:3800
+ *
+ * Every visual value is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve. Dark mode is `[data-theme="dark"]` on an ancestor:
+ * `--color-background-base` and `--color-icon-secondary` ship in the on-light
+ * and on-dark modes, so the cascade repaints the button and nothing here
+ * branches on theme.
+ *
+ * Nothing the design left unbound is filled in here. Each omission is raised
+ * in docs/design-findings-iconbutton.md.
+ */
+
+/*
+ * Auto layout: horizontal, centre/centre, fixed 40 x 40.
+ *
+ * Width and height are what the node binds, `sizing/8` — a core primitive with
+ * no semantic size in front of it (finding 4).
+ *
+ * No padding. The node carries a raw `10` on all sides, bound to no variable,
+ * and it cannot take effect: 10 + 10 plus a stroke leaves less room than the
+ * 24px icon, so Figma centres the icon at 8 and the padding is overridden
+ * (finding 5). Centring alone reproduces the node.
+ *
+ * No stroke. The node binds the stroke colour to `color/border/secondary` but
+ * leaves the stroke weight a raw `1`, bound to no variable, on both symbols
+ * (finding 6). A colour with no width draws nothing, so nothing is drawn.
+ */
+.horizon-icon-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--sizing-8);
+  height: var(--sizing-8);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--border-radius-pill);
+  background-color: var(--color-background-base);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Figma layer "favorite" — the icon.
+ *
+ * Its colour is the variable bound to the vector's fill, `color/icon/secondary`.
+ *
+ * Its size is not set here. The node draws a 24 x 24 bounding box bound to no
+ * variable (finding 7), and `--size-icon-lg` — 24 on web, 32 on mobile, 20 on
+ * back-office — is not what the node says. The glyph therefore renders at the
+ * Material Symbols stylesheet's own default, which is 24, and its outline,
+ * weight and optical size are that font's defaults: no axis is set, so no raw
+ * font value appears in this file.
+ */
+.horizon-icon-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  color: var(--color-icon-secondary);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------------- hovered -- */
+
+/*
+ * `state=hovered` (114:3798) differs from idle in one thing: the
+ * `elevation/level1` effect style. Figma wires ON_HOVER onto the idle symbol
+ * only, so this keys off `is-interactive`, which nothing but idle carries.
+ */
+.horizon-icon-button.is-interactive:hover,
+.horizon-icon-button.is-hovered {
+  box-shadow: var(--elevation-level1);
+}
