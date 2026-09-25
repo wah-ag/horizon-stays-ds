@@ -23,17 +23,18 @@ What each symbol binds:
 | width, height | `sizing/8` | 40 | `--sizing-8` (finding 4) |
 | corner radius | `border/radius/pill` | 1000 | `--border-radius-pill` |
 | fill | `color/background/base` | `#ffffff` | `--color-background-base` |
-| stroke colour | `color/border/secondary` | `#e5e7ea` | not drawn (finding 6) |
-| stroke weight | nothing | raw `1` | not drawn (finding 6) |
+| stroke colour | `color/border/secondary` | `#e5e7ea` | `--color-border-secondary` (finding 6, resolved) |
+| stroke weight, all four sides | `border/width/sm` | 1, INSIDE | `--border-width-sm` (finding 6, resolved) |
 | padding | nothing | raw `10` all sides | none (finding 5) |
 | icon fill | `color/icon/secondary` | `#626e7a` | `--color-icon-secondary` |
 | icon size | nothing | raw 24 x 24 | Material Symbols default (finding 7) |
 | effect, hovered only | `elevation/level1` style | two stacked shadows | `--elevation-level1` |
 | prototype | idle: ON_HOVER to hovered | | `:hover` on idle only |
 
-Findings 1 to 3 cover structure and behaviour. Finding 6 is the one visible
-difference from the node that ships. Finding 9 is a small shadow-alpha mismatch
-in the token layer.
+Findings 1 to 3 cover structure and behaviour. Finding 6 is resolved: the
+stroke weight is now bound and the border is drawn. Finding 9 is a small
+shadow-alpha mismatch in the token layer. Finding 11 is an inconsistency in the
+Icons library.
 
 ---
 
@@ -151,7 +152,23 @@ node's 8px icon offset without the raw number. Nothing is substituted.
 intent is "icon inset by 8". Either way, the value on the node should match what
 renders.
 
-## 6. The stroke weight is unbound, so no stroke is drawn
+## 6. The stroke weight is unbound, so no stroke is drawn (resolved)
+
+**Resolved on 2026-09-26.** Read live, read only: 114:3799 (`state=idle`) and
+114:3798 (`state=hovered`) now bind `strokeTopWeight`, `strokeBottomWeight`,
+`strokeLeftWeight` and `strokeRightWeight` to `border/width/sm` (1), and their
+one solid stroke to `color/border/secondary` (`#e5e7ea`), `strokeAlign: INSIDE`.
+
+**Code now:** `border: var(--border-width-sm) solid var(--color-border-secondary)`
+with `box-sizing: border-box`, so the outer box stays 40 x 40, as an inside
+stroke does. The icon stays centred: 1 of border plus 7 of free space puts it 8
+from each outer edge, the same as the node.
+
+This change covers IconButton only. The CardImage instances (114:3883,
+115:3923, 114:3874) were not re-read in this change, and CardImage finding 1 is
+unchanged here.
+
+The original finding follows for the record.
 
 The stroke **colour** is bound to `color/border/secondary`. The stroke
 **weight** is a raw `1` (`strokeAlign: INSIDE`) on both symbols, bound to no
@@ -240,3 +257,24 @@ the description), and re-export. Do not patch `tokens/`.
 collide with anything in HTML. The two non-Figma props, `label` (rendered as
 `aria-label`) and `onClick`, follow ButtonCTA's precedent for behaviour that
 Figma cannot express. Nothing is added to `docs/naming-conflicts.md`.
+
+## 11. The Icons library anatomy says 14, 16 and 22 px, but every icon is 24 x 24
+
+This is a design inconsistency in the Figma Icons library (file
+`hhrqfya0t9GIY551xfMBpw`, page `Icons`, 4:4), not an IconButton defect.
+
+Read live, read only, on 2026-09-26:
+
+- The page's ANATOMY section (13:46) labels the icon frame **"square 14,16,22 px"**
+  (text node 13:73).
+- All 12 component symbols on the page are **24 x 24**. That includes both
+  variants of the `favorite` set 37:36, `type=outline` (37:35) and `type=fill`
+  (37:34). No symbol is 14, 16 or 22.
+
+The IconButton node agrees with the symbols: its `favorite` instance is
+24 x 24. The code keeps the 24px glyph (finding 7), so nothing changes here.
+
+**Decision:** say which is right. If icons are 24 x 24, correct the anatomy
+label. If the library should offer 14, 16 and 22, add those sizes and, per
+finding 7, bind them to `size/icon/*` tokens. The code cannot choose between the
+label and the symbols.
