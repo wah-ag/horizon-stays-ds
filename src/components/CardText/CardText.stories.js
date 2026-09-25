@@ -21,9 +21,9 @@
  * front of them (docs/design-findings-cardtext.md, finding 4). Every default
  * below is the exact string the node draws, so the default story is the node.
  *
- * Two gaps are visibly missing on purpose. The rating and price rows set a 4px
- * gap in Figma bound to no variable, so the score sits flush against its label
- * here — reported, not filled in (finding 1). `Gaps` shows exactly where.
+ * The rating and price rows bind their gap to `spacing/gap/xs` in the node, and
+ * the component carries it (finding 1, resolved). The `Gaps` story that showed
+ * the missing gap has been removed with it.
  */
 
 import { CardText, DEFAULTS } from './CardText.js';
@@ -102,19 +102,6 @@ export const Matrix = {
             CardText({ review, price }),
           ]),
         ),
-      ),
-    ),
-  parameters: { layout: 'fullscreen', controls: { disable: true } },
-};
-
-export const Gaps = {
-  render: () =>
-    page(
-      'CardText — the two unbound gaps',
-      'The rating row (104:110) and the price row (104:113) each set a 4px horizontal gap in Figma that is bound to no variable, while their own parent (104:109) binds the identical 4px to spacing/gap/xs. An unbound value is a design gap to report, not a decision to make, so the nearest token is not substituted in: the score sits flush against its label below, and will keep doing so until the design binds those two gaps. This is the one known difference from the node. See docs/design-findings-cardtext.md, finding 1.',
-      group(
-        'as built — 4.7(318 reviews), 121 EUR per night with no gap',
-        el('div', { style: { width: NODE_WIDTH } }, CardText()),
       ),
     ),
   parameters: { layout: 'fullscreen', controls: { disable: true } },

@@ -13,9 +13,11 @@
  * on-light and on-dark modes, so the cascade repaints the block and nothing
  * here reads a token value to decide something.
  *
- * Two things the design left unbound are deliberately absent rather than
- * guessed — see docs/design-findings-cardtext.md, findings 1 and 5. Read the
- * comments below before "fixing" them.
+ * Findings live in docs/design-findings-cardtext.md. Finding 1 (the unbound
+ * row gaps) is resolved: the design now binds both rows to `spacing/gap/xs`,
+ * and `.horizon-card-text__row` carries it. Finding 2 (the root gap bound to a
+ * core primitive) and finding 5 (the 246px frame width) are still open — read
+ * the comments below before "fixing" them.
  */
 
 /* ----------------------------------------------------------------- root -- */
@@ -98,13 +100,8 @@
 }
 
 /*
- * 104:110 and 104:113 — horizontal auto layout, vertically centred.
- *
- * NO `gap` HERE, ON PURPOSE. Both rows set a 4px gap in Figma that is bound to
- * no variable, while their own parent (104:109, above) binds the identical 4px
- * to `spacing/gap/xs`. An unbound value is a design gap to report, not a
- * decision to make, so the nearest token is not substituted in and the score
- * sits flush against its label until the design binds it. Finding 1.
+ * 104:110 and 104:113 — horizontal auto layout, vertically centred, gap bound
+ * to `spacing/gap/xs` in the node (finding 1, resolved).
  *
  * `white-space: nowrap` is the node's own setting on 104:109 — the score and
  * its label stay on one line.
@@ -113,6 +110,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  gap: var(--spacing-gap-xs);
   white-space: nowrap;
 }
 
