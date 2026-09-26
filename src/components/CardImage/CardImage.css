@@ -1,0 +1,121 @@
+/**
+ * CardImage — Horizon card media.
+ * Figma: CardImage — component set inside frame 115:3938
+ *
+ * Every visual value is a token. Consume a platform entry point
+ * (config/css/index.css, index-mobile.css or index-back-office.css) for these
+ * to resolve. Dark mode is `[data-theme="dark"]` on an ancestor:
+ * `--color-border-secondary` ships in the on-light and on-dark modes, so the
+ * cascade repaints the frame and nothing here branches on theme.
+ *
+ * Where the four symbols bind different variables to the same property, the
+ * properly-named one is used and the other is raised in
+ * docs/design-findings-cardimage.md rather than reproduced. Nothing the design
+ * left unbound is filled in here.
+ */
+
+/*
+ * Auto layout: vertical, centre/centre, clipped content, own stacking context.
+ *
+ * The symbols are drawn 362 x 362 and 363 x 272 — canvas geometry bound to no
+ * variable. A media well fills what it is given and takes its height from the
+ * ratio instead; the raw numbers are raised in
+ * docs/design-findings-cardimage.md, findings 4 and 5.
+ */
+.horizon-card-image {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  border: var(--border-width-sm) solid var(--color-border-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+/*
+ * The aspect ratio is Figma's `ratio` property value, written as CSS reads it.
+ * These are the ratios the property names, not the boxes the symbols are drawn
+ * at — the `3:2` symbol is drawn 363 x 272, which is not 3:2. Finding 5.
+ */
+.horizon-card-image--ratio-1x1 {
+  aspect-ratio: 1 / 1;
+}
+
+.horizon-card-image--ratio-3x2 {
+  aspect-ratio: 3 / 2;
+}
+
+/* Figma layer "Slide Image" — fills the well, crops rather than distorts. */
+.horizon-card-image__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/*
+ * Figma layer "overlay" — a top-to-bottom gradient that appears on hover and
+ * nothing else moves.
+ *
+ * The two stops are the variables the node binds: `color/grey/800a` and
+ * `color/grey/0a`. Both are core primitives with no semantic role in front of
+ * them, and the node's own layer opacity overrides their alpha, so this renders
+ * darker here than on the canvas. Both are raised in
+ * docs/design-findings-cardimage.md, findings 2 and 3 — exactly what the node
+ * binds is used, nothing is substituted, and nothing is invented.
+ *
+ * The node also gives this layer its own 1px `color/border/secondary` stroke and
+ * `8` radius, coincident with the frame's. One stroke is drawn, by the frame.
+ */
+.horizon-card-image__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-grey-800a),
+    var(--color-grey-0a)
+  );
+  pointer-events: none;
+}
+
+/*
+ * `is-interactive` is carried by idle alone, so a well pinned to `hovered` for
+ * the docs does not repaint under the pointer.
+ */
+.horizon-card-image.is-interactive:hover .horizon-card-image__overlay,
+.horizon-card-image.is-hovered .horizon-card-image__overlay {
+  display: block;
+}
+
+/*
+ * Figma's `overlayAction` slot — the IconButton, pinned to the top-right corner
+ * and above the overlay.
+ *
+ * The node draws it 12px from the frame's outer edge, bound to no variable
+ * (finding 6). An absolute offset here is measured from inside the stroke, so
+ * the same distance is `--spacing-padding-md` less the stroke it sits inside —
+ * composed from the two tokens the frame already uses, not from a third number.
+ *
+ * Size, fill, radius and the elevation the node raises it with on hover all
+ * belong to IconButton, which does not exist yet (finding 1). This rule places
+ * the slot and stacks it; it draws no button.
+ */
+.horizon-card-image__action {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--spacing-padding-md) - var(--border-width-sm));
+  right: calc(var(--spacing-padding-md) - var(--border-width-sm));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
